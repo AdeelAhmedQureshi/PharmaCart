@@ -1,0 +1,36 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+nav {
+    width: 100%;
+    background-color: rgb(74, 200, 235);
+    height: 80px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+.searchField
+{
+    height: 50px;
+    border-radius: 10px;
+    margin-left: 50px;
+    border: none;
+    width: 400px;
+    margin-right: 350px;
+}
+a{
+    color: white;
+    text-decoration: none;
+   font-size: large;
+}
+#title{
+    margin-left: 20px;
+}
+.cart
+{
+    margin-left: 50px;
+    font-size: xx-large;
+}
+  
