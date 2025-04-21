@@ -1,4 +1,5 @@
 import "./Navbar.css";
+import { Link } from 'react-router-dom';
 import { FaShoppingCart } from "react-icons/fa";
 export function Navbar() {
   function Check() {
@@ -13,8 +14,10 @@ export function Navbar() {
           placeholder="Search Medicines"
           className="searchField"
         />
-        <a href="">SignIn | </a>
-        <a href=""> SignUp</a>
+        {/* <Link to="/login">SignIn | </Link>
+        <Link to="/signup"> SignUp</Link> */}
+        <Link to="/login">SignIn</Link> | <Link to="/signup">SignUp</Link>
+
         <FaShoppingCart
           style={{ fontSize: "35px" }}
           onClick={Check}

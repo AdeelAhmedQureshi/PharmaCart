@@ -18,7 +18,7 @@ export function Login() {
                 type="text"
                 name="username"
                 id="username"
-                className="login-input inputs"
+                className="login-input field"
                 placeholder="Username"
               />
             </div>
@@ -28,7 +28,7 @@ export function Login() {
               type="password"
               name="password"
               id="password"
-              className="inputs login-input"
+              className="field login-input"
               placeholder="Password"
             />
           </div>

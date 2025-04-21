@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa"; // Font Awesome
 import "./SignUp.css";
-export function SignIn() {
+export function SignUp() {
   const [data, setData] = useState({
     fullname: "",
-    gender: "male",
+    gender: "female",
     phoneNumber: "",
     address: "",
     email: "",
