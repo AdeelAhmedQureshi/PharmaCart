@@ -1,36 +1,60 @@
-*
-{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 nav {
-    width: 100%;
-    background-color: rgb(74, 200, 235);
-    height: 80px;
-    display: flex;
-    align-items: center;
-    color: white;
+  width: 100%;
+  background-color: rgb(74, 200, 235);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  color: white;
 }
-.searchField
-{
-    height: 50px;
-    border-radius: 10px;
-    margin-left: 50px;
-    border: none;
-    width: 400px;
-    margin-right: 350px;
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
 }
-a{
-    color: white;
-    text-decoration: none;
-   font-size: large;
+.searchField {
+  height: 50px;
+  border-radius: 10px;
+  margin-left: 100px;
+  border: none;
+  width: 500px;
+  padding: 8px 40px 8px 15px; /* room for icon on right */
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: white;
+  color: black;
 }
-#title{
-    margin-left: 20px;
+a {
+  color: white;
+  text-decoration: none;
+  font-size: large;
 }
-.cart
-{
-    margin-left: 50px;
-    font-size: xx-large;
+#title {
+  margin-left: 20px;
+  min-width: 150px;
 }
-  
+.cart {
+  margin-left: 50px;
+  font-size: xx-large;
+  cursor: pointer;
+}
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: gray;
+  pointer-events: none; /* makes the icon non-interactive so clicks pass through to input */
+}
+.search-container {
+  position: relative;
+  display: inline-flex;
+  margin-right: 200px;
+}
