@@ -188,8 +188,8 @@ export function SignUp() {
             className="cross-icon"
             onClick={() => setpopup(false)}
           />
-          <h3>
-            🎉 Registration Successful!
+          <h3 className="popup-text">
+             Registration Successful!
           </h3>
           <img src="../assets/check.jpeg" alt="" />
         </div>

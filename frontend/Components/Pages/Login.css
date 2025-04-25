@@ -2,7 +2,7 @@
   height: 400px;
   width: 80%;
   margin-left: 10%;
-  margin-top: 80px;
+  margin-top: 60px;
   display: flex;
   justify-content: row;
 }
@@ -10,7 +10,7 @@
 form {
   background-color: rgb(74, 200, 235);
   height: 300px;
-  width: 80%;
+  width: 75%;
   display: flex;
   flex-direction: column;
 }
@@ -18,6 +18,8 @@ form {
 .field {
   margin: 10px;
   height: 35px;
+  background-color: white;
+  color: black;
   border-radius: 5px;
   width: 300px;
   border: none;
@@ -29,16 +31,16 @@ form {
   border-radius: 15px;
   width: 150px;
   border: none;
-  margin-left: 29%;
+  margin-left: 25%;
   margin-top: 5%;
   font-size: large;
   cursor: pointer;
 }
 
 h2 {
-  align-self: center;
   font-size: 30px;
   color: white;
+  margin-left: 130px;
 }
 
 .bg {
@@ -80,5 +82,8 @@ h2 {
 
 .login-input {
   padding-left: 40px; 
-  width: 80%;
+  width: 85%;
+}
+.line{
+  margin-left: 50px;
 }
