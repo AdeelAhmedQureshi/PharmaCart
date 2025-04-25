@@ -1,3 +1,7 @@
+*{
+  margin: 0;
+  padding: 0;
+}
 #signInForm {
   margin-left: 33%;
   margin-top: 3%;
@@ -5,7 +9,7 @@
   display: flex;
   flex-direction: column;
   padding: 3%;
-  width: 30%;
+  width: 31%;
   border-radius: 10px;
 }
 textarea {
@@ -71,4 +75,9 @@ select.inputs {
   text-align: center;
   color: #06202B;
   font-weight: 500;
+}
+.SigUpTittle{
+  color: white;
+  font-size: 28px;
+  align-self: center;
 }

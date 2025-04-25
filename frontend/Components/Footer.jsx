@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import Font Awesome icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
   faInstagram,
   faGithub,
-} from "@fortawesome/free-brands-svg-icons"; // Social media icons
+} from "@fortawesome/free-brands-svg-icons";
 import "./Footer.css";
 
 export function Footer() {
@@ -16,12 +16,14 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <h2 className="footer-logo">PharmaCart</h2>
-        <h3 className="footer-tagline">Your Trusted Online Medicine Partner</h3>
+        <div className="footer-header">
+          <h2 className="footer-logo">PharmaCart</h2>
+          <h3 className="footer-tagline">Your Trusted Online Medicine Partner</h3>
+        </div>
 
         <div className="footer-links">
-          <div>
-            <h2 className="footer-heading">Company</h2>
+          <div className="footer-section">
+            <h2 className="footer-heading">COMPANY</h2>
             <ul className="footer-list">
               <li>
                 <Link to="/about" className="footer-link">
@@ -35,8 +37,8 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div>
-            <h2 className="footer-heading">Support</h2>
+          <div className="footer-section">
+            <h2 className="footer-heading">SUPPORT</h2>
             <ul className="footer-list">
               <li>
                 <Link to="/faq" className="footer-link">
@@ -52,7 +54,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Social Media Icons with Font Awesome */}
         <div className="footer-social">
           <Link to="https://www.facebook.com/" className="footer-social-icon">
             <FontAwesomeIcon icon={faFacebook} />
@@ -66,11 +67,11 @@ export function Footer() {
         </div>
 
         <button onClick={scrollToTop} className="footer-button">
-          ↑ Back to Top
+          Back to Top
         </button>
-        <h3 className="footer-copyright">
-          &copy; 2025 PharmaCart. All rights reserved.
-        </h3>
+        <p className="footer-copyright">
+          © 2025 PharmaCart. All rights reserved.
+        </p>
       </div>
     </footer>
   );

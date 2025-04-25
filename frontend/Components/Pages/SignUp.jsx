@@ -133,7 +133,7 @@ export function SignUp() {
   return (
     <>
       <form id="signInForm" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
+        <h3 className="SigUpTittle">Create Account</h3>
         <input
           type="text"
           placeholder="FullName"

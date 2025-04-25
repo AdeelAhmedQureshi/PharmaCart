@@ -15,15 +15,20 @@
   text-align: center;
 }
 
+.footer-header {
+  margin-bottom: 2rem;
+}
+
 .footer-logo {
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 0.3rem;
+  margin-right: 13%;
 }
 
 .footer-tagline {
   font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   opacity: 0.9;
 }
 
@@ -35,18 +40,29 @@
   margin-bottom: 1.5rem;
 }
 
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .footer-heading {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  width: 100%;
+  margin-right: 50%;
 }
 
 .footer-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .footer-link {
@@ -54,6 +70,8 @@
   color: white;
   opacity: 0.8;
   transition: opacity 0.3s;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
 }
 
 .footer-link:hover {
@@ -64,7 +82,7 @@
   display: flex;
   justify-content: center;
   gap: 1.2rem;
-  margin-top: 1rem;
+  margin: 1.5rem 0;
 }
 
 .footer-social-icon {
@@ -79,22 +97,25 @@
 }
 
 .footer-button {
-  margin-top: 1.5rem;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
   font-size: 0.85rem;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
   cursor: pointer;
-  text-decoration: underline;
   color: white;
-  opacity: 0.8;
+  opacity: 0.9;
+  transition: all 0.3s ease;
 }
 
 .footer-button:hover {
   opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .footer-copyright {
   font-size: 0.85rem;
-  margin-top: 1.2rem;
+  margin-top: 1rem;
   opacity: 0.7;
 }

@@ -1,6 +1,6 @@
 import "./Login.css";
 import { FaUser, FaLock } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 export function Login() {
   return (
     <>
@@ -31,8 +31,9 @@ export function Login() {
               placeholder="Password"
             />
           </div>
-          {/* <p className="line"
-          onClick={()=>useNavigate("/signup")}>Do not have an account ?</p> */}
+          <p className="line">Do not have an account ?
+            <Link to="/signup" style={{textDecoration:"Underline"}}>Sign Up</Link>
+          </p>
             <button className="btn">Log In</button>
           </form>
         </div>
