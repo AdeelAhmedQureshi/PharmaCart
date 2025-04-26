@@ -51,7 +51,7 @@ nav {
 .cart-wrapper {
   position: relative;
   display: inline-block;
-  margin-right: 70px; 
+  margin-right: 50px; 
 }
 
 .cart-text {
@@ -90,5 +90,26 @@ nav {
 }
 
 .user-wrapper:hover .login-text {
+  display: block;
+}
+.about-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.about-text {
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: -10px;
+  background-color: #077A7D;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.about-wrapper:hover .about-text {
   display: block;
 }

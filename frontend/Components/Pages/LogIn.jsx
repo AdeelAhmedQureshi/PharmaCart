@@ -9,7 +9,7 @@ export function Login() {
           <img src="../assets/pic2.png" alt="" className="bg" />
         </div>
         <div className="form_portion">
-          <form>
+          <form className="logInForm">
             <h2>Log In</h2>
             <div className="input-wrapper">
             <span className="icon-inside"><FaUser /></span>

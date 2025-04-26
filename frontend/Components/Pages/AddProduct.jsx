@@ -1,14 +1,7 @@
-
-
-
-
-
-
-
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import './AddProduct.css';
 function AddProduct() {
   const categories = [
     'All', 'Allergy', 'Pain Relief', 'Mental Health',
@@ -64,48 +57,47 @@ function AddProduct() {
 
   return (
     <div>
-      <h1>Add Product in Inventory</h1>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} className='AddForm'>
+      <h1 className='AddProduct'>Add Product</h1>
         {/* Product Name */}
         <div>
-          <label>Product Name</label>
           <input
             type="text"
             name="name"
-            placeholder="e.g. Panadol"
+            placeholder="Product Name"
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className='inputs'
           />
           {formik.touched.name && formik.errors.name && (
             <p>{formik.errors.name}</p>
           )}
         </div>
-
         {/* Strength */}
         <div>
-          <label>Strength</label>
           <input
             type="text"
             name="strength"
-            placeholder="e.g. 500mg"
+            placeholder="Strength"
             value={formik.values.strength}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className='inputs'
           />
           {formik.touched.strength && formik.errors.strength && (
             <p>{formik.errors.strength}</p>
           )}
         </div>
-
         {/* Category */}
         <div>
-          <label>Category</label>
           <select
             name="category"
             value={formik.values.category}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className='inputs'
+            placeholder="Select Category"
           >
             {categories.map((c, i) => (
               <option key={i} value={c}>{c}</option>
@@ -115,14 +107,14 @@ function AddProduct() {
 
         {/* Price */}
         <div>
-          <label>Price (Rs)</label>
           <input
             type="number"
             name="price"
-            placeholder="e.g. 100"
+            placeholder="Price"
             value={formik.values.price}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className='inputs'
           />
           {formik.touched.price && formik.errors.price && (
             <p>{formik.errors.price}</p>
@@ -131,14 +123,14 @@ function AddProduct() {
 
         {/* Description */}
         <div>
-          <label>Description</label>
           <textarea
             name="description"
-            placeholder="Write a few lines about the product"
+            placeholder="Description"
             rows="3"
             value={formik.values.description}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            className='inputs'
           />
           {formik.touched.description && formik.errors.description && (
             <p>{formik.errors.description}</p>
@@ -147,11 +139,11 @@ function AddProduct() {
 
         {/* Product Image */}
         <div>
-          <label>Product Image</label>
           <input
             type="file"
             name="image"
             accept="image/*"
+            className="inputs"
             onChange={(e) => formik.setFieldValue('image', e.target.files[0])}
             onBlur={formik.handleBlur}
           />
@@ -162,7 +154,7 @@ function AddProduct() {
 
         {/* Submit */}
         <div>
-          <button type="submit">Add Product</button>
+          <button type="submit" className='btn'>Add</button>
         </div>
       </form>
     </div>

@@ -5,12 +5,13 @@
 #signInForm {
   margin-left: 33%;
   margin-top: 3%;
-  height: 460px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   padding: 3%;
-  width: 31%;
+  width: 33%;
   border-radius: 10px;
+  background-color: rgb(74, 200, 235);
 }
 textarea {
   resize: none;

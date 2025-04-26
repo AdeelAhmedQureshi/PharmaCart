@@ -9,6 +9,7 @@ export function SignUp() {
     address: "",
     email: "",
     password: "",
+    password2:""
   });
   const [errors, setErrors] = useState({
     fullname: "",
@@ -17,6 +18,7 @@ export function SignUp() {
     address: "",
     email: "",
     password: "",
+    password2:""
   });
   const [popup, setpopup] = useState(false);
   function handleSubmit(e) {
@@ -129,6 +131,24 @@ export function SignUp() {
         }));
       }
     }
+    else if (name === "password2") {
+      if (!value) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Confirm Your Password",
+        }));
+      } else if (value !== data.password) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Password must be same",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "",
+        }));
+      }
+    }
   }
   return (
     <>
@@ -179,6 +199,14 @@ export function SignUp() {
           onChange={handleChange}
         />
         {errors.password && <p>{errors.password}</p>}
+        <input
+          type="password"
+          name="password2"
+          placeholder="Confirm Password"
+          className="inputs"
+          onChange={handleChange}
+        />
+        {errors.password2 && <p>{errors.password2}</p>}
         <button className="btn">Register</button>
       </form>
       {popup && (
