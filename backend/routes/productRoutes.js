@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
-const { addProduct, getAllProducts } = require('../controllers/productController');
+const { addProduct, getAllProducts, deleteProduct, updateProduct } = require('../controllers/productController');
 const { validateProduct } = require('../middleware/productValidator');
 const { validateRequest } = require('../middleware/validateRequest');
 

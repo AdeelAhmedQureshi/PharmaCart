@@ -5,9 +5,10 @@ const cors = require("cors");
 
 const userRoutes = require('./routes/userRoutes'); 
 const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/CartRoutes'); 
 
 // App Config
-dotenv.config(); // Load variables from .env file
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -31,6 +32,7 @@ mongoose.connect(db)
 // Routes
 app.use('/api/users', userRoutes); // User routes
 app.use('/api/products', productRoutes); // Product routes
+// app.use('/api/cart', cartRoutes);
 
 app.get("/", (req, res) => {
   console.log("Root route accessed");
