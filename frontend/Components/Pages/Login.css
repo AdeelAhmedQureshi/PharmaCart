@@ -8,7 +8,7 @@
 }
 
 .logInForm {
-  background-color: rgb(74, 200, 235);
+  background-color: #4c71a5;
   height: 300px;
   width: 75%;
   display: flex;
@@ -62,7 +62,7 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(74, 200, 235);
+  background-color: #4c71a5;
   color: white;
 }
 

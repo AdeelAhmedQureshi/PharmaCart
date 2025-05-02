@@ -1,8 +1,16 @@
-import "./Categories.css";
-export function Categories({ onCategorySelect, selectedCategory }) { //onCategorySelect a function call
+export function Categories({ onCategorySelect, selectedCategory }) {
   return (
-    <div className="categories-navbar">
-      <div className="categories-buttons">
+    <div className="categories-navbar" style={{ 
+      padding: "10px", 
+      backgroundColor: "#f8f9fa", 
+      borderBottom: "1px solid #dee2e6" 
+    }}>
+      <div className="categories-buttons" style={{ 
+        display: "flex", 
+        gap: "10px", 
+        flexWrap: "wrap", 
+        justifyContent: "center" 
+      }}>
         {[
           "All",
           "Allergy",
@@ -16,17 +24,38 @@ export function Categories({ onCategorySelect, selectedCategory }) { //onCategor
           "Cold & Flu",
         ].map((category) => (
           <button
-            style={{ 
+            style={{
               cursor: "pointer",
-              backgroundColor: selectedCategory === category ? "#077A7D" : "",
-              color: selectedCategory === category ? "white" : "",
-              borderRadius: "5px",
-              width: "105px",
-              height: "35px",
+              backgroundColor: selectedCategory === category ? "#007BFF" : "#ffffff",
+              color: selectedCategory === category ? "#ffffff" : "#007BFF",
+              border: "1px solid #007BFF",
+              borderRadius: "20px",
+              padding: "8px 16px",
+              fontSize: "14px",
+              fontWeight: "500",
+              transition: "all 0.2s ease",
+              transform: "translateY(0)",
+              boxShadow: selectedCategory === category 
+                ? "0px 4px 6px rgba(0, 123, 255, 0.2)" 
+                : "0px 2px 4px rgba(0, 0, 0, 0.05)",
             }}
             value={category}
             key={category}
             onClick={(e) => onCategorySelect(e.target.value)}
+            onMouseEnter={(e) => {
+              if (selectedCategory !== category) {
+                e.target.style.backgroundColor = "#e7f1ff";
+                e.target.style.transform = "translateY(-2px)";
+                e.target.style.boxShadow = "0px 4px 8px rgba(0, 123, 255, 0.2)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (selectedCategory !== category) {
+                e.target.style.backgroundColor = "#ffffff";
+                e.target.style.transform = "translateY(0)";
+                e.target.style.boxShadow = "0px 2px 4px rgba(0, 0, 0, 0.05)";
+              }
+            }}
           >
             {category}
           </button>

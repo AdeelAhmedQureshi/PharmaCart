@@ -44,9 +44,9 @@ export function SingleProduct() {
 
   return (
     <div style={{
-      maxWidth: "1200px",
-      margin: "40px auto",
-      padding: "20px",
+      maxWidth: "1100px",
+      margin: "20px auto",
+      padding: "10px",
       backgroundColor: "white",
       borderRadius: "10px",
       boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
@@ -69,19 +69,20 @@ export function SingleProduct() {
           />
         </div>
         <div style={{ flex: 2 }}>
-          <h1 style={{ marginBottom: "10px", fontSize:"30px", fontWeight:600 }}>{product.name}</h1>
+          <h1 style={{ marginBottom: "10px", fontSize:"30px", fontWeight:600 ,marginLeft:"10px" }}>{product.name}</h1>
           <p style={{ 
             fontSize: "24px", 
             color: "#007BFF",
-            marginBottom: "20px"
+            marginBottom: "20px",
+            marginLeft:"10px" 
           }}>
             ${product.price}
           </p>
-          <p><strong>Strength:</strong> {product.strength}</p>
-          <p><strong>Category:</strong> {product.category}</p>
+          <p style={{marginLeft:"10px" }}><strong>Strength:</strong> {product.strength}</p>
+          <p style={{marginLeft:"10px" }}><strong>Category:</strong> {product.category}</p>
           
-          <div style={{ margin: "30px 0" }}>
-            <h3>Description:</h3>
+          <div style={{ margin: "30px 0",marginLeft:"20px" }}>
+            <h3><strong>Description:</strong></h3>
             <p>{product.description}</p>
           </div>
 
@@ -90,7 +91,8 @@ export function SingleProduct() {
             margin: "20px 0",
             display: "flex",
             alignItems: "center",
-            gap: "10px"
+            gap: "10px",
+            marginLeft:"20px"
           }}>
             <button
               onClick={decreaseQty}
@@ -100,7 +102,7 @@ export function SingleProduct() {
                 fontSize: "20px",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
-                backgroundColor: "rgb(74, 200, 235)",
+                backgroundColor: "rgb(88, 96, 99)",
                 cursor: "pointer",
                 color:"white"
               }}
@@ -114,7 +116,7 @@ export function SingleProduct() {
                 fontSize: "20px",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
-                backgroundColor: "rgb(74, 200, 235)",
+                backgroundColor: "rgb(88, 96, 99)",
                 cursor: "pointer",
                 color:"white"
               }}
@@ -122,18 +124,30 @@ export function SingleProduct() {
           </div>
           <button style={{
             padding: "12px 24px",
-            backgroundColor: "#007BFF",
+            backgroundColor: "#06202B",
             color: "white",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
             fontSize: "16px",
-            // marginRight: "15%"
-            right: "0",
-            marginLeft: "500px",
+            marginTop: "20px",
+            marginLeft: "30px",
+          }}
+          onClick={() => alert(`Successfully added ${quantity} of ${product.name} to Cart`)}>
+           Add to Cart
+          </button>
+          <button style={{
+            padding: "12px 24px",
+            backgroundColor: "#06202B",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "16px",
+             marginLeft: "20px",
           }}
           onClick={() => alert(`Successfully Order placed of ${product.name}`)}>
-            Place Order
+           Buy Now
           </button>
         </div>
       </div>

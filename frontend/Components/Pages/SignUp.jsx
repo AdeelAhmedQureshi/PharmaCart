@@ -25,11 +25,35 @@ export function SignUp() {
     e.preventDefault();
     const hasErrors = Object.values(errors).some((err) => err !== "");
     const hasEmptyFields = Object.values(data).some((val) => val.trim() === "");
+    console.log(data.gender)
 
     if (hasErrors || hasEmptyFields) {
       alert("Please fill all required fields correctly.");
       return;
     }
+    fetch("http://localhost:5000/api/users/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || "Something went wrong");
+          });
+        }
+        return res.json();
+      })
+      .then((response) => {
+        console.log("Success:", response);
+        setpopup(true);
+      })
+      .catch((error) => {
+        alert("Error: " + error.message);
+      });
+
     setpopup(true);
   }
   function handleChange(e) {
@@ -111,7 +135,6 @@ export function SignUp() {
           ...prev,
           [name]: "",
         }));
-        setvalidData(true);
       }
     } else if (name === "password") {
       if (!value) {
@@ -119,7 +142,7 @@ export function SignUp() {
           ...prev,
           [name]: "*Password is Required",
         }));
-      } else if (value < 8) {
+      } else if (value.length < 8) {
         setErrors((prev) => ({
           ...prev,
           [name]: "*Password must be at least 8 charcters",
@@ -137,7 +160,13 @@ export function SignUp() {
           ...prev,
           [name]: "*Confirm Your Password",
         }));
-      } else if (value !== data.password) {
+      }else if (value.length < 8) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Password must be at least 8 charcters",
+        }));
+      } 
+       else if (value !== data.password) {
         setErrors((prev) => ({
           ...prev,
           [name]: "*Password must be same",
@@ -207,7 +236,7 @@ export function SignUp() {
           onChange={handleChange}
         />
         {errors.password2 && <p>{errors.password2}</p>}
-        <button className="btn">Register</button>
+        <button className="btn">Sign-Up</button>
       </form>
       {popup && (
         <div className="popup">
