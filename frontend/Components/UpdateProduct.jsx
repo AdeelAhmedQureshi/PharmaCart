@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -11,7 +5,7 @@ import * as Yup from 'yup';
 function UpdateProduct({ productId }) {
   const [product, setProduct] = useState(null);
   const categories = [
-    'All', 'Allergy', 'Pain Relief', 'Mental Health',
+    'General', 'Allergy', 'Pain Relief', 'Mental Health',
     'Diabetes', 'Digestive Health', 'Vitamins',
     'Heart Health', 'Skin Care', 'Cold & Flu',
   ];

@@ -1,41 +1,56 @@
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "../Components/Navbar";
-// import { Login } from "../Components/Pages/Login";
+import { Footer } from "../Components/Footer";
 import { Login } from "../Components/Pages/LogIn";
 import { SignUp } from "../Components/Pages/SignUp";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Footer } from "../Components/Footer";
-import React from "react";
 import { Home } from "../Components/Pages/Home";
 import { SingleProduct } from "../Components/SingleProduct";
-import Dashboard from "../Components/Dashboard";
-import AddProduct from "../Components/AddProduct";
-import DeleteProduct from "../Components/DeleteProduct";
+import AddProduct from "../Components/Pages/AddProduct";
 import UpdateProduct from "../Components/UpdateProduct";
+import Page404 from "./Admin_Dashboard/pages/Page404"; // for admin unknown routes
 
-import { useState } from "react";
+// Dashboard layout wrapper
+import Dashboard from "../src/Admin_Dashboard/pages/Dashboard";
+
 function App() {
   const [searchText, setSearchText] = useState("");
+
   function handleSearch(value) {
     setSearchText(value);
   }
+
   return (
-    <>
-      <BrowserRouter>
-        <Navbar SearchValue={handleSearch} />
-        <Routes>
-          <Route path="/" element={<Home searchText={searchText} />}/>
-          <Route path="/products/:id" element={<SingleProduct/>}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}>
-          </Route>  
-          <Route path="/addproduct" element={<AddProduct />}></Route>        
-          <Route path="/deleteproduct" element={<DeleteProduct />}></Route>
-          <Route path="/updateproduct" element={<UpdateProduct />}></Route>
-        </Routes>
-        <Footer></Footer>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        {/* Public Routes with Navbar and Footer */}
+        <Route
+          path="/*"
+          element={
+            <>
+              <Navbar SearchValue={handleSearch} />
+              <Routes>
+                <Route path="/" element={<Home searchText={searchText} />} />
+                <Route path="/products/:id" element={<SingleProduct />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="*" element={<Home searchText={searchText} />} />
+              </Routes>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Dashboard/Admin Routes (no Navbar/Footer) */}
+        <Route path="/dashboard" element={<Dashboard />}>
+          <Route path="updateproduct" element={<UpdateProduct />} />
+          <Route path="*" element={<Page404 />} />
+        </Route>
+
+        {/* Separate Route for AddProduct */}
+        <Route path="/dashboard/addproduct" element={<AddProduct />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
