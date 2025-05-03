@@ -60,7 +60,13 @@ exports.deleteProduct = async (req, res) => {
     const publicId = product.image.split('/').pop().split('.')[0];
 
     // Delete from Cloudinary
-    await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
+    // Try deleting from Cloudinary
+      try {
+        await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
+      } catch (cloudErr) {
+        console.warn('Cloudinary image deletion failed or image not found:', cloudErr.message);
+        // Proceed even if deletion fails — not critical
+      }
 
     // Delete from MongoDB
     await Product.findByIdAndDelete(id);
