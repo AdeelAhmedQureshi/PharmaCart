@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { medicine } from "../Data/medicines";
+import { useParams } from "react-router-dom";
+import { medicine } from "../../Data/medicines";
 import { useEffect, useState } from "react";
 
 const images = [
@@ -22,46 +22,35 @@ const images = [
 ];
 
 export function SingleProduct() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [image, setImage] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    const findProduct = medicine.find(prod => prod.productId === parseInt(id));
+    console.log(productId);
+    const findProduct = medicine.find(prod => prod.productId === productId);
+    console.log("Found product:", findProduct);
     if (findProduct) {
       setProduct(findProduct);
       setImage(images[Math.floor(Math.random() * images.length)]);
-    } else {
-      navigate("/"); 
     }
-  }, [id, navigate]);
+    else{console.error("Product not found!");}
+  }, [productId]);
 
   if (!product) return <div>Loading...</div>;
+  const increaseQty = () => setQuantity(prev => prev + 1);
+  const decreaseQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   return (
     <div style={{
-      maxWidth: "1200px",
-      margin: "40px auto",
-      padding: "20px",
+      maxWidth: "1100px",
+      margin: "20px auto",
+      padding: "10px",
       backgroundColor: "white",
       borderRadius: "10px",
       boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
     }}>
-      <button 
-        onClick={() => navigate(-1)}
-        style={{
-          padding: "8px 16px",
-          backgroundColor: "#f0f0f0",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-          marginBottom: "20px"
-        }}
-      >
-        ← Back to Products
-      </button>
-
       <div style={{
         display: "flex",
         gap: "40px",
@@ -80,47 +69,85 @@ export function SingleProduct() {
           />
         </div>
         <div style={{ flex: 2 }}>
-          <h1 style={{ marginBottom: "10px" }}>{product.name}</h1>
+          <h1 style={{ marginBottom: "10px", fontSize:"30px", fontWeight:600 ,marginLeft:"10px" }}>{product.name}</h1>
           <p style={{ 
             fontSize: "24px", 
             color: "#007BFF",
-            marginBottom: "20px"
+            marginBottom: "20px",
+            marginLeft:"10px" 
           }}>
             ${product.price}
           </p>
-          <p><strong>Strength:</strong> {product.strength}</p>
-          <p><strong>Category:</strong> {product.category}</p>
+          <p style={{marginLeft:"10px" }}><strong>Strength:</strong> {product.strength}</p>
+          <p style={{marginLeft:"10px" }}><strong>Category:</strong> {product.category}</p>
           
-          <div style={{ margin: "30px 0" }}>
-            <h3>Description</h3>
+          <div style={{ margin: "30px 0",marginLeft:"20px" }}>
+            <h3><strong>Description:</strong></h3>
             <p>{product.description}</p>
           </div>
 
+          {/* Quantity Selector */}
+          <div style={{
+            margin: "20px 0",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            marginLeft:"20px"
+          }}>
+            <button
+              onClick={decreaseQty}
+              style={{
+                width: "35px",
+                height: "35px",
+                fontSize: "20px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                backgroundColor: "rgb(88, 96, 99)",
+                cursor: "pointer",
+                color:"white"
+              }}
+            >−</button>
+            <span style={{ fontSize: "20px", minWidth: "30px", textAlign: "center" }}>{quantity}</span>
+            <button
+              onClick={increaseQty}
+              style={{
+                width: "35px",
+                height: "35px",
+                fontSize: "20px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                backgroundColor: "rgb(88, 96, 99)",
+                cursor: "pointer",
+                color:"white"
+              }}
+            >+</button>
+          </div>
           <button style={{
             padding: "12px 24px",
-            backgroundColor: "#007BFF",
+            backgroundColor: "#06202B",
             color: "white",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
             fontSize: "16px",
-            marginRight: "15px"
-          }}>
-            Add to Cart
+            marginTop: "20px",
+            marginLeft: "30px",
+          }}
+          onClick={() => alert(`Successfully added ${quantity} of ${product.name} to Cart`)}>
+           Add to Cart
           </button>
-
-          <button 
-            onClick={() => navigate(-1)}
-            style={{
-              padding: "12px 24px",
-              backgroundColor: "#f0f0f0",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "16px"
-            }}
-          >
-            Continue Shopping
+          <button style={{
+            padding: "12px 24px",
+            backgroundColor: "#06202B",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "16px",
+             marginLeft: "20px",
+          }}
+          onClick={() => alert(`Successfully Order placed of ${product.name}`)}>
+           Buy Now
           </button>
         </div>
       </div>

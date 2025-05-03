@@ -1,0 +1,72 @@
+.user-details-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-end;
+  transition: all 0.3s ease-in-out;
+}
+
+.user-details-sidebar {
+  width: 220px;
+  top: 80px;
+  right: 50px;
+  height: 25%;
+  background-color: #ffffff;
+  padding: 5px 20px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 20px;
+  border: none;
+  background: none;
+  color: red;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+  margin-left: 0;
+  margin-top: 15px;
+}
+
+.user-info {
+  font-size: 14px;
+  color: #555;
+  margin: 3px 0;
+}
+
+.logout-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  font-size: 15px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}

@@ -1,18 +1,21 @@
 .container {
   height: 400px;
   width: 80%;
-  margin-left: 10%;
+  margin-left: 9%;
   margin-top: 60px;
   display: flex;
   justify-content: row;
 }
 
-form {
-  background-color: rgb(74, 200, 235);
+.logInForm {
+  background-color: #4c71a5;
   height: 300px;
   width: 75%;
   display: flex;
   flex-direction: column;
+  align-self: center;
+  margin-left: 10px;
+  margin-top: 0;
 }
 
 .field {
@@ -40,7 +43,7 @@ form {
 h2 {
   font-size: 30px;
   color: white;
-  margin-left: 130px;
+  margin-left: 110px;
 }
 
 .bg {
@@ -59,7 +62,7 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgb(74, 200, 235);
+  background-color: #4c71a5;
   color: white;
 }
 
@@ -85,5 +88,5 @@ h2 {
   width: 85%;
 }
 .line{
-  margin-left: 50px;
+  margin-left: 40px;
 }

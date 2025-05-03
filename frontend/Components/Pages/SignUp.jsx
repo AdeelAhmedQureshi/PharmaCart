@@ -9,6 +9,7 @@ export function SignUp() {
     address: "",
     email: "",
     password: "",
+    password2:""
   });
   const [errors, setErrors] = useState({
     fullname: "",
@@ -17,17 +18,42 @@ export function SignUp() {
     address: "",
     email: "",
     password: "",
+    password2:""
   });
   const [popup, setpopup] = useState(false);
   function handleSubmit(e) {
     e.preventDefault();
     const hasErrors = Object.values(errors).some((err) => err !== "");
     const hasEmptyFields = Object.values(data).some((val) => val.trim() === "");
+    console.log(data.gender)
 
     if (hasErrors || hasEmptyFields) {
       alert("Please fill all required fields correctly.");
       return;
     }
+    fetch("http://localhost:5000/api/users/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            throw new Error(err.message || "Something went wrong");
+          });
+        }
+        return res.json();
+      })
+      .then((response) => {
+        console.log("Success:", response);
+        setpopup(true);
+      })
+      .catch((error) => {
+        alert("Error: " + error.message);
+      });
+
     setpopup(true);
   }
   function handleChange(e) {
@@ -109,7 +135,6 @@ export function SignUp() {
           ...prev,
           [name]: "",
         }));
-        setvalidData(true);
       }
     } else if (name === "password") {
       if (!value) {
@@ -117,10 +142,34 @@ export function SignUp() {
           ...prev,
           [name]: "*Password is Required",
         }));
-      } else if (value < 8) {
+      } else if (value.length < 8) {
         setErrors((prev) => ({
           ...prev,
           [name]: "*Password must be at least 8 charcters",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "",
+        }));
+      }
+    }
+    else if (name === "password2") {
+      if (!value) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Confirm Your Password",
+        }));
+      }else if (value.length < 8) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Password must be at least 8 charcters",
+        }));
+      } 
+       else if (value !== data.password) {
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Password must be same",
         }));
       } else {
         setErrors((prev) => ({
@@ -133,7 +182,7 @@ export function SignUp() {
   return (
     <>
       <form id="signInForm" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
+        <h3 className="SigUpTittle">Create Account</h3>
         <input
           type="text"
           placeholder="FullName"
@@ -179,7 +228,15 @@ export function SignUp() {
           onChange={handleChange}
         />
         {errors.password && <p>{errors.password}</p>}
-        <button className="btn">Register</button>
+        <input
+          type="password"
+          name="password2"
+          placeholder="Confirm Password"
+          className="inputs"
+          onChange={handleChange}
+        />
+        {errors.password2 && <p>{errors.password2}</p>}
+        <button className="btn">Sign-Up</button>
       </form>
       {popup && (
         <div className="popup">

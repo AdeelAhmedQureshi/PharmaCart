@@ -1,48 +1,35 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React from 'react';
-import { FaPlusCircle, FaTrashAlt, FaEdit } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; 
+import React from "react";
+import { FaPlusCircle, FaTrashAlt, FaEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import "./Dashboard.css"; 
 
 const Dashboard = () => {
-    const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  
   const cardData = [
     {
-      title: 'Add Product',
-      description: 'Add new products to your inventory.',
-      icon: <FaPlusCircle size={70} />,
-      bg: 'bg-green-300',
-      text: 'text-green-800',
-      onClick: () => navigate('/addproduct'),
+      id: 1,
+      title: "Add Product",
+      description: "Add new products to your inventory",
+      icon: <FaPlusCircle className="card-icon" size={70} />,
+      bgClass: "card-green",
+      onClick: () => navigate("/addproduct"),
     },
     {
-      title: 'Delete Product',
-      description: 'Remove unwanted products from your inventory.',
-      icon: <FaTrashAlt size={70} />,
-      bg: 'bg-red-300',
-      text: 'text-red-800',
-      onClick: () => navigate('/deleteproduct'),
+      id: 2,
+      title: "Delete Product",
+      description: "Remove products from your inventory",
+      icon: <FaTrashAlt className="card-icon" size={70} />,
+      bgClass: "card-red",
+      onClick: () => navigate("/deleteproduct"),
     },
     {
-      title: 'Update Product',
-      description: 'Modify details of existing products.',
-      icon: <FaEdit size={70} />,
-      bg: 'bg-blue-300',
-      text: 'text-blue-800',
-      onClick: () => navigate('/updateproduct'),
+      id: 3,
+      title: "Update Product",
+      description: "Modify existing product details",
+      icon: <FaEdit className="card-icon" size={70} />,
+      bgClass: "card-blue",
+      onClick: () => navigate("/updateproduct"),
     },
   ];
 
@@ -62,9 +49,10 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
+        </div>
+
       </div>
-    </div>
+
   );
 };
-
 export default Dashboard;
