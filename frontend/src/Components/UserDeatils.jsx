@@ -11,7 +11,7 @@ export function UserDetails({ setShowUserDetails }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setisLogIn(false);
-    window.location.href = "/login";
+    // window.location.href = "/login";
   };
   const name=userFullName.charAt(0).toUpperCase() + userFullName.slice(1).toLowerCase();
   return (

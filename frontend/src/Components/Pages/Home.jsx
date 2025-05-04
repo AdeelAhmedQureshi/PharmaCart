@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { medicine } from "../../Data/medicines";
+import {medicine} from '../../../Data/medicines'
 import { Categories } from "../Categories";
 import { useNavigate } from "react-router-dom";
 import { Login } from "./LogIn";

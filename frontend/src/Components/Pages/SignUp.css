@@ -3,14 +3,14 @@
   padding: 0;
 }
 #signInForm {
-  margin-left: 33%;
+  margin-left: 30%;
   margin-top: 3%;
   height: 500px;
   display: flex;
   flex-direction: column;
   padding: 3%;
-  width: 33%;
-  border-radius: 10px;
+  width: 36%;
+  border-radius: 20px;
   background-color: #4c71a5;
 }
 textarea {

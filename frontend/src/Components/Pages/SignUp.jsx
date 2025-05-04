@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa"; // Font Awesome
 import "./SignUp.css";
-export function SignUp() {
+export function SignUp({ onSignUpSuccess }) {
   const [data, setData] = useState({
     fullname: "",
     gender: "female",
@@ -48,12 +48,12 @@ export function SignUp() {
       })
       .then((response) => {
         console.log("Success:", response);
-        setpopup(true);
+        if (onRegistrationSuccess) onRegistrationSuccess();
       })
       .catch((error) => {
         alert("Error: " + error.message);
       });
-
+      if (onSignUpSuccess) onSignUpSuccess();
     setpopup(true);
   }
   function handleChange(e) {

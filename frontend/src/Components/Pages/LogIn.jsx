@@ -5,13 +5,18 @@ import { useState } from "react";
 import { LogInContext } from "../Context/UserContext";
 import { useContext } from "react";
 
-export function Login() {
+export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSuccess  }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setisLogIn, setUserEmail, setUserFullName } =
-    useContext(LogInContext);
+  const {
+    setisLogIn,
+    setUserEmail,
+    setUserFullName,
+    setUserPhoneNumber,
+    setUserAddress,
+  } = useContext(LogInContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,12 +36,14 @@ export function Login() {
       localStorage.setItem("token", data.token); // persist on refresh";
       localStorage.setItem("userFullName", data.user.fullname); // persist on refresh
       localStorage.setItem("userEmail", email);
-
+      localStorage.setItem("userPhoneNumber", data.user.phoneNumber); // persist on refresh
+      localStorage.setItem("userAddress", data.user.address); // persist on refresh
       setisLogIn(true);
-      // alert("Login successful!");
       setUserEmail(email);
-      // alert(data)
+      setUserAddress(data.user.address); // set username in context
+      setUserPhoneNumber(data.user.phoneNumber); // set username in context
       setUserFullName(data.user.fullname); // set username in context
+      if (onLoginSuccess) onLoginSuccess();
       if (data.user.isAdmin) navigate("/dashboard"); // change route after login
       else navigate("/"); // change route after login
     } else {
@@ -82,15 +89,34 @@ export function Login() {
           </div>
           <p className="line">
             Do not have an account?
-            <Link to="/signup" style={{ textDecoration: "underline" }}>
+            {/* <Link to="/signup" style={{ textDecoration: "underline" }}>
+              Sign Up
+            </Link> */}
+            <span
+              onClick={onSwitchToSignUp}
+              style={{
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+            >
               {" "}
               Sign Up
-            </Link>
+            </span>
           </p>
           <button type="submit" className="btn">
             Log In
           </button>
         </form>
+        {showSuccess && (
+        <div className="popup">
+          <FaTimes
+            className="cross-icon"
+            onClick={onCloseSuccess}
+          />
+          <h3 className="popup-text">Registration Successful!</h3>
+          <img src="../assets/check.jpeg" alt="check" />
+        </div>
+      )}
       </div>
     </div>
   );

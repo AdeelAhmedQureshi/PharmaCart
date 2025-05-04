@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { medicine } from "../../Data/medicines";
+import {medicine} from '../../../Data/medicines'
 import { useEffect, useState } from "react";
 
 const images = [
