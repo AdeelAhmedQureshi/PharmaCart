@@ -48,7 +48,9 @@ export function SignUp({ onSignUpSuccess }) {
       })
       .then((response) => {
         console.log("Success:", response);
-        if (onRegistrationSuccess) onRegistrationSuccess();
+        if (onSignUpSuccess) onSignUpSuccess(); 
+        setpopup(true)
+        // if (onRegistrationSuccess) onRegistrationSuccess();
       })
       .catch((error) => {
         alert("Error: " + error.message);
@@ -191,7 +193,7 @@ export function SignUp({ onSignUpSuccess }) {
           onChange={handleChange}
         />
         {errors.fullname && <p>{errors.fullname}</p>}
-        <select name="gender" className="inputs" onChange={handleChange}>
+        <select name="gender" className="inputs" onChange={handleChange} value={data.gender}>
           <option value="female">Female</option>
           <option value="male">Male</option>
           <option value="Prefer not to say">Prefer not to say</option>
@@ -243,7 +245,10 @@ export function SignUp({ onSignUpSuccess }) {
           <FaTimes
             style={{ color: "red", fontSize: "24px" }}
             className="cross-icon"
-            onClick={() => setpopup(false)}
+            onClick={() => {
+              setpopup(false);
+              if (onSignUpSuccess) onSignUpSuccess(); // ✅ Close signup popup too
+            }}
           />
           <h3 className="popup-text">
              Registration Successful!

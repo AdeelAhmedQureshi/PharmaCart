@@ -5,7 +5,7 @@ import { useState } from "react";
 import { LogInContext } from "../Context/UserContext";
 import { useContext } from "react";
 
-export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSuccess  }) {
+export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -89,9 +89,6 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
           </div>
           <p className="line">
             Do not have an account?
-            {/* <Link to="/signup" style={{ textDecoration: "underline" }}>
-              Sign Up
-            </Link> */}
             <span
               onClick={onSwitchToSignUp}
               style={{
@@ -99,7 +96,6 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
                 cursor: "pointer"
               }}
             >
-              {" "}
               Sign Up
             </span>
           </p>
@@ -107,16 +103,6 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
             Log In
           </button>
         </form>
-        {showSuccess && (
-        <div className="popup">
-          <FaTimes
-            className="cross-icon"
-            onClick={onCloseSuccess}
-          />
-          <h3 className="popup-text">Registration Successful!</h3>
-          <img src="../assets/check.jpeg" alt="check" />
-        </div>
-      )}
       </div>
     </div>
   );
