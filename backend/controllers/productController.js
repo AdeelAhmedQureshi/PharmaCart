@@ -60,7 +60,13 @@ exports.deleteProduct = async (req, res) => {
     const publicId = product.image.split('/').pop().split('.')[0];
 
     // Delete from Cloudinary
-    await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
+    // Try deleting from Cloudinary
+      try {
+        await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
+      } catch (cloudErr) {
+        console.warn('Cloudinary image deletion failed or image not found:', cloudErr.message);
+        // Proceed even if deletion fails — not critical
+      }
 
     // Delete from MongoDB
     await Product.findByIdAndDelete(id);
@@ -70,6 +76,61 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Something went wrong', error: err.message });
   }
 };
+
+// @desc    Update a product
+// @route   PUT /api/products/updateproduct/:id
+// @access  Private
+// exports.updateProduct = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const product = await Product.findById(id);
+
+//     if (!product) return res.status(404).json({ message: 'Product not found' });
+
+//     // If new image uploaded
+//     if (req.file) {
+//       // Delete old image from Cloudinary
+//       const publicId = product.image.split('/').pop().split('.')[0];
+//       await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
+
+//       // Upload new image
+//       const streamUpload = (req) => {
+//         return new Promise((resolve, reject) => {
+//           const stream = cloudinary.uploader.upload_stream(
+//             { resource_type: 'image', folder: 'pharmacart_products' },
+//             (error, result) => {
+//               if (result) {
+//                 resolve(result);
+//               } else {
+//                 reject(error);
+//               }
+//             }
+//           );
+//           stream.end(req.file.buffer);
+//         });
+//       };
+
+//       const uploadResult = await streamUpload(req);
+//       product.image = uploadResult.secure_url;
+//     }
+
+//     // Update other fields
+//     const { name, strength, category, price, description } = req.body;
+//     if (name) product.name = name;
+//     if (strength) product.strength = strength;
+//     if (category) product.category = category;
+//     if (price) product.price = price;
+//     if (description) product.description = description;
+
+//     await product.save();
+
+//     res.status(200).json({ message: 'Product updated successfully', product });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Something went wrong', error: err.message });
+//   }
+// };
+
+
 
 // @desc    Update a product
 // @route   PUT /api/products/updateproduct/:id
@@ -130,6 +191,20 @@ exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 }); // latest first
     res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: 'Something went wrong', error: err.message });
+  }
+};
+
+// @desc    Get a single product by ID
+exports.getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    res.status(200).json(product);
   } catch (err) {
     res.status(500).json({ message: 'Something went wrong', error: err.message });
   }

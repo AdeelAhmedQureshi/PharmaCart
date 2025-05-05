@@ -10,13 +10,8 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const {
-    setisLogIn,
-    setUserEmail,
-    setUserFullName,
-    setUserPhoneNumber,
-    setUserAddress,
-  } = useContext(LogInContext);
+  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin } =
+    useContext(LogInContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,12 +33,19 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
       localStorage.setItem("userEmail", email);
       localStorage.setItem("userPhoneNumber", data.user.phoneNumber); // persist on refresh
       localStorage.setItem("userAddress", data.user.address); // persist on refresh
+      localStorage.setItem("isAdmin", JSON.stringify(data.user.isAdmin)); // for check isAdmin
+
       setisLogIn(true);
       setUserEmail(email);
       setUserAddress(data.user.address); // set username in context
       setUserPhoneNumber(data.user.phoneNumber); // set username in context
       setUserFullName(data.user.fullname); // set username in context
       if (onLoginSuccess) onLoginSuccess();
+      // alert(data)
+      // setUserFullName(data.user.fullname); // set username in context
+
+      setIsAdmin(data.user.isAdmin); // set isAdmin in context
+
       if (data.user.isAdmin) navigate("/dashboard"); // change route after login
       else navigate("/"); // change route after login
     } else {

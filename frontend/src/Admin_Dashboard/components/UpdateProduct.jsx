@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "./AddProduct.css";
-function AddProduct() {
+import { useParams, useNavigate } from "react-router-dom";
+import "./AddProduct.css";  // same css both addproduct and updateproduct page.
+
+function UpdateProduct() {
+  const { pid } = useParams();  //The useParams() hook returns an object with keys that match the param names you define in your routes.
+
+  const navigate = useNavigate();
+  const [initialValues, setInitialValues] = useState(null);
+
   const categories = [
     "All",
     "Allergy",
@@ -16,14 +23,37 @@ function AddProduct() {
     "Cold & Flu",
   ];
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/products/getproduct/${pid}`);
+        const data = await response.json();
+        console.log('fetching first product data ', data); //test 
+        setInitialValues({
+          name: data.name || "",
+          strength: data.strength || "",
+          category: data.category || "All",
+          price: data.price || "",
+          description: data.description || "",
+          image: null,
+        });
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
+    fetchProduct();
+  }, [pid]);
+
   const formik = useFormik({
-    initialValues: {
+    enableReinitialize: true,
+    initialValues: initialValues
+     || {
       name: "",
       strength: "",
       category: "All",
       price: "",
       description: "",
-      image: null,
+      image: null,   // initially null,not required filed for update, but will be updated when user selects a file.
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Product name is required"),
@@ -32,55 +62,43 @@ function AddProduct() {
       price: Yup.number()
         .required("Price is required")
         .positive("Must be a positive number"),
-      description: Yup.string().required("Description is required"),
-      image: Yup.mixed().required("Product image is required"),
+      description: Yup.string().required("Description is required").min(10, "Description must be at least 10 characters"),
     }),
     onSubmit: async (values) => {
-      const allEmpty = 
-        values.name.trim() === '' &&
-        values.strength.trim() === '' &&
-        values.price === '' &&
-        values.description.trim() === '' &&
-        values.image === null;
-
-      if (allEmpty) {
-        alert('Please fill all the fields.');
-        return;
-      }
       const formData = new FormData();
       formData.append("name", values.name);
       formData.append("strength", values.strength);
       formData.append("category", values.category);
       formData.append("price", values.price);
       formData.append("description", values.description);
-      formData.append("image", values.image);
-  
+      if (values.image) formData.append("image", values.image);
+
       try {
-        const response = await fetch("http://localhost:5000/api/products/addproduct", {
-          method: "POST",
+        const response = await fetch(`http://localhost:5000/api/products/updateproduct/${pid}`, {
+          method: "PUT",
           body: formData,
         });
-  
+
         if (response.ok) {
-          const data = await response.json();
-          alert("Product added successfully!");
-          console.log("Product added:", data);
+          alert("Product updated successfully!");
+          navigate("/dashboard");
         } else {
-          alert("Failed to add product");
+          alert("Failed to update product");
         }
       } catch (error) {
-        console.error("Error adding product:", error);
-        alert("Error adding product");
+        console.error("Error updating product:", error);
+        alert("Error updating product");
       }
     },
   });
-  
+
+  if (!initialValues) return <p>Loading...</p>;
 
   return (
     <div>
       <form onSubmit={formik.handleSubmit} className="AddForm">
-        <h1 className="AddProduct">Add Product</h1>
-        {/* Product Name */}
+        <h1 className="AddProduct">Update Product</h1>
+
         <div>
           <input
             type="text"
@@ -91,11 +109,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.name && formik.errors.name && (
-            <p>{formik.errors.name}</p>
-          )}
+          {formik.touched.name && formik.errors.name && <p>{formik.errors.name}</p>}
         </div>
-        {/* Strength */}
+
         <div>
           <input
             type="text"
@@ -106,11 +122,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.strength && formik.errors.strength && (
-            <p>{formik.errors.strength}</p>
-          )}
+          {formik.touched.strength && formik.errors.strength && <p>{formik.errors.strength}</p>}
         </div>
-        {/* Category */}
+
         <div>
           <select
             name="category"
@@ -118,17 +132,13 @@ function AddProduct() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             className="inputs"
-            placeholder="Select Category"
           >
             {categories.map((c, i) => (
-              <option key={i} value={c}>
-                {c}
-              </option>
+              <option key={i} value={c}>{c}</option>
             ))}
           </select>
         </div>
 
-        {/* Price */}
         <div>
           <input
             type="number"
@@ -139,12 +149,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.price && formik.errors.price && (
-            <p>{formik.errors.price}</p>
-          )}
+          {formik.touched.price && formik.errors.price && <p>{formik.errors.price}</p>}
         </div>
 
-        {/* Description */}
         <div>
           <textarea
             name="description"
@@ -155,12 +162,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.description && formik.errors.description && (
-            <p>{formik.errors.description}</p>
-          )}
+          {formik.touched.description && formik.errors.description && <p>{formik.errors.description}</p>}
         </div>
 
-        {/* Product Image */}
         <div>
           <input
             type="file"
@@ -170,15 +174,11 @@ function AddProduct() {
             onChange={(e) => formik.setFieldValue("image", e.target.files[0])}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.image && formik.errors.image && (
-            <p>{formik.errors.image}</p>
-          )}
         </div>
 
-        {/* Submit */}
         <div>
           <button type="submit" className="btn">
-            Add
+            Update
           </button>
         </div>
       </form>
@@ -186,4 +186,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;
