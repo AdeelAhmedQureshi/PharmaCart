@@ -3,7 +3,7 @@ import "./Checkout.css";
 import { useContext } from "react";
 import { LogInContext } from "../Context/UserContext";
 
-export default function CheckoutComponent({ userData }) {
+export function CheckoutComponent({ userData ,handleClose }) {
   const { userFullName, userEmail ,userAddress,userPhoneNumber} = useContext(LogInContext);
   const [formData, setFormData] = useState({
     fullName: userFullName || "",
@@ -53,6 +53,7 @@ export default function CheckoutComponent({ userData }) {
     }
 
     alert("Order submitted successfully!");
+    handleClose();
   };
 
   function validateInp(name, value) {

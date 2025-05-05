@@ -11,6 +11,10 @@ export function UserDetails({ setShowUserDetails }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setisLogIn(false);
+    localStorage.removeItem("userFullName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userPhoneNumber");
+    localStorage.removeItem("userAddress");
     // window.location.href = "/login";
   };
   const name=userFullName.charAt(0).toUpperCase() + userFullName.slice(1).toLowerCase();

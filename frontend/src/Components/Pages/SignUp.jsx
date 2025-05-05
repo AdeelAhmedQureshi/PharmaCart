@@ -50,7 +50,7 @@ export function SignUp({ onSignUpSuccess }) {
         console.log("Success:", response);
         if (onSignUpSuccess) onSignUpSuccess(); 
         setpopup(true)
-        // if (onRegistrationSuccess) onRegistrationSuccess();
+
       })
       .catch((error) => {
         alert("Error: " + error.message);

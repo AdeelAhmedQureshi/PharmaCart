@@ -8,7 +8,6 @@ import { Home } from "./Components/Pages/Home";
 import { SingleProduct } from "./Components/Pages/SingleProduct";
 import { About } from "./Components/Pages/About";
 import { LogInProvider } from "./Components/Context/UserContext";
-import CheckoutComponent from "./Components/Pages/Checkout";
 import React from "react";
 import Dashboard from "./Components/Pages/Dashboard";
 import AddProduct from "./Components/Pages/AddProduct";
@@ -43,7 +42,7 @@ function App() {
           <Route path="/updateproduct" element={<UpdateProduct />} />
           <Route path="/about" element={<About />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
-          <Route path="/checkout" element={<CheckoutComponent />}></Route>
+          {/* <Route path="/checkout" element={<CheckoutComponent />}></Route> */}
         </Routes>
         {showLogin && (
           <div
