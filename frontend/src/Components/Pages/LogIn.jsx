@@ -10,7 +10,7 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin } =
+  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin,setUserAddress } =
     useContext(LogInContext);
 
   const handleLogin = async (e) => {
