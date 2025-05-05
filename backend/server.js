@@ -6,6 +6,7 @@ const cors = require("cors");
 const userRoutes = require('./routes/userRoutes'); 
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/CartRoutes'); 
+const adminRoutes = require("./routes/adminRoutes");
 
 // App Config
 dotenv.config();
@@ -33,6 +34,7 @@ mongoose.connect(db)
 app.use('/api/users', userRoutes); // User routes
 app.use('/api/products', productRoutes); // Product routes
 // app.use('/api/cart', cartRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
   console.log("Root route accessed");

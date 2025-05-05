@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/upload');
-const { addProduct, getAllProducts, deleteProduct, updateProduct } = require('../controllers/productController');
+const { addProduct, getAllProducts, deleteProduct, updateProduct, getProductById } = require('../controllers/productController');
 const { validateProduct } = require('../middleware/productValidator');
 const { validateRequest } = require('../middleware/validateRequest');
 
@@ -23,6 +23,11 @@ router.delete('/deleteproduct/:id', deleteProduct);
 
 // Update product
 router.put('/updateproduct/:id', upload.single('image'), validateProduct, validateRequest, updateProduct);
+
+// @desc    Get a single product by ID
+// @route   GET /api/products/getproduct/:id
+// @access  Public
+router.get('/getproduct/:id', getProductById);
 
 // @route   GET /api/products/
 // @desc    Get all products

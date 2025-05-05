@@ -10,7 +10,7 @@ export function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setisLogIn, setUserEmail, setUserFullName } =
+  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin } =
     useContext(LogInContext);
 
   const handleLogin = async (e) => {
@@ -31,12 +31,16 @@ export function Login() {
       localStorage.setItem("token", data.token); // persist on refresh";
       localStorage.setItem("userFullName", data.user.fullname); // persist on refresh
       localStorage.setItem("userEmail", email);
+      localStorage.setItem("isAdmin", JSON.stringify(data.user.isAdmin)); // for check isAdmin
 
       setisLogIn(true);
       // alert("Login successful!");
       setUserEmail(email);
       // alert(data)
-      setUserFullName(data.user.fullname); // set username in context
+      // setUserFullName(data.user.fullname); // set username in context
+
+      setIsAdmin(data.user.isAdmin); // set isAdmin in context
+
       if (data.user.isAdmin) navigate("/dashboard"); // change route after login
       else navigate("/"); // change route after login
     } else {

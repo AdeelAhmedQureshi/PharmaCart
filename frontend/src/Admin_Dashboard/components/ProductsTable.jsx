@@ -23,6 +23,11 @@ const Products = () => {
     fetchProducts();
   }, []);
 
+  const handleUpdate = (id) => {
+    navigate(`/dashboard/updateproduct/${id}`);
+  };
+
+
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
@@ -80,7 +85,7 @@ const Products = () => {
                   <td className="p-3 line-clamp-2">{product.description}</td>
                   <td className="p-3 space-x-2">
                     <button
-                      onClick={() => navigate(`/dashboard/updateproduct/${product._id}`)}
+                      onClick={() => handleUpdate(product._id)}
                       className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
                     >
                       Update

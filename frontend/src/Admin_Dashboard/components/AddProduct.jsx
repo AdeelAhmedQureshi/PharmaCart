@@ -32,7 +32,7 @@ function AddProduct() {
       price: Yup.number()
         .required("Price is required")
         .positive("Must be a positive number"),
-      description: Yup.string().required("Description is required"),
+      description: Yup.string().required("Description is required").min(10, "Description must be at least 10 characters"),
       image: Yup.mixed().required("Product image is required"),
     }),
     onSubmit: async (values) => {
