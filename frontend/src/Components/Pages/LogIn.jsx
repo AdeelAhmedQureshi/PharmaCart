@@ -1,6 +1,6 @@
 import "./Login.css";
 import { FaUser, FaLock } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LogInContext } from "../Context/UserContext";
 import { useContext } from "react";
@@ -10,7 +10,7 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin,setUserAddress } =
+  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin,setUserAddress ,setUserPhoneNumber} =
     useContext(LogInContext);
 
   const handleLogin = async (e) => {
@@ -41,9 +41,6 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
       setUserPhoneNumber(data.user.phoneNumber); // set username in context
       setUserFullName(data.user.fullname); // set username in context
       if (onLoginSuccess) onLoginSuccess();
-      // alert(data)
-      // setUserFullName(data.user.fullname); // set username in context
-
       setIsAdmin(data.user.isAdmin); // set isAdmin in context
 
       if (data.user.isAdmin) navigate("/dashboard"); // change route after login

@@ -2,14 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Cart = require('../models/Cart');
 
-// Add item to cart
+// ✅ Add item to cart
 router.post('/add', async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { userEmail, productId, quantity } = req.body;
+
+  // Simple validation to avoid undefined error
+  if (!userEmail || !productId || !quantity) {
+    return res.status(400).json({ error: "userEmail, productId, and quantity are required." });
+  }
+
   try {
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userEmail });
 
     if (!cart) {
-      cart = new Cart({ userId, items: [{ productId, quantity }] });
+      cart = new Cart({ userEmail, items: [{ productId, quantity }] });
     } else {
       const itemIndex = cart.items.findIndex(p => p.productId.toString() === productId);
       if (itemIndex > -1) {
@@ -22,24 +28,25 @@ router.post('/add', async (req, res) => {
     await cart.save();
     res.status(200).json(cart);
   } catch (error) {
+    console.error("Error adding to cart", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Get user cart
-router.get('/:userId', async (req, res) => {
+// ✅ Get user cart
+router.get('/:userEmail', async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.params.userId }).populate("items.productId");
+    const cart = await Cart.findOne({ userEmail: req.params.userEmail }).populate("items.productId");
     res.status(200).json(cart);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Remove item from cart
-router.delete('/:userId/:productId', async (req, res) => {
+// ✅ Remove item from cart
+router.delete('/:userEmail/:productId', async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.params.userId });
+    const cart = await Cart.findOne({ userEmail: req.params.userEmail });
     if (!cart) return res.status(404).json({ message: "Cart not found" });
 
     cart.items = cart.items.filter(item => item.productId.toString() !== req.params.productId);
@@ -49,3 +56,5 @@ router.delete('/:userId/:productId', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+module.exports = router;

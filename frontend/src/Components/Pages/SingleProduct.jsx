@@ -1,50 +1,40 @@
 import { useParams } from "react-router-dom";
-import { medicine } from "../../../Data/medicines";
-import { useEffect, useState } from "react";
-
-const images = [
-  "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1576602976047-174e57a47881?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1550572017-edd951aa6e72?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1576073719676-aa95576db207?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1576602976047-174e57a47881?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop",
-];
-
+import { useContext, useEffect, useState } from "react";
+import { LogInContext } from "../Context/UserContext";
 export function SingleProduct() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [image, setImage] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const {userEmail}=useContext(LogInContext).userEmail;
+
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/products");
+      const data = await res.json();
+      const findProduct = data.find((prod) => prod._id === productId); // use _id or productId based on your DB
+      console.log("Found product:", findProduct);
+      if (findProduct) {
+        setProduct(findProduct);
+      } else {
+        console.error("Product not found!");
+      }
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    }
+  };
 
   useEffect(() => {
-    console.log(productId);
-    const findProduct = medicine.find((prod) => prod.productId === productId);
-    console.log("Found product:", findProduct);
-    if (findProduct) {
-      setProduct(findProduct);
-      setImage(images[Math.floor(Math.random() * images.length)]);
-    } else {
-      console.error("Product not found!");
-    }
-  }, [productId]);
+    fetchProduct();
+  }, []);
 
   if (!product) return <div>Loading...</div>;
+
   const increaseQty = () => setQuantity((prev) => prev + 1);
   const decreaseQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-  const addToCart = async () => {
-    const userId = "YOUR_USER_ID"; // Replace with the actual user ID (from context/auth or props)
 
+  const addToCart = async () => {
+    const userId = userEmail;
+  
     try {
       const response = await fetch("http://localhost:5000/api/cart/add", {
         method: "POST",
@@ -52,16 +42,16 @@ export function SingleProduct() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId,
-          productId: product.productId,
+          userEmail,
+          productId: product._id,
           quantity,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Error adding product to cart");
       }
-
+  
       const cartData = await response.json();
       alert(`Successfully added ${quantity} of ${product.name} to Cart`);
     } catch (err) {
@@ -69,6 +59,8 @@ export function SingleProduct() {
       alert("Error adding product to cart.");
     }
   };
+  
+
   return (
     <div
       style={{
@@ -89,7 +81,7 @@ export function SingleProduct() {
       >
         <div style={{ flex: 1 }}>
           <img
-            src={image}
+            src={product.image}
             style={{
               width: "100%",
               maxWidth: "400px",
@@ -118,7 +110,7 @@ export function SingleProduct() {
               marginLeft: "10px",
             }}
           >
-            ${product.price}
+            Rs.{product.price}
           </p>
           <p style={{ marginLeft: "10px" }}>
             <strong>Strength:</strong> {product.strength}
@@ -134,7 +126,6 @@ export function SingleProduct() {
             <p>{product.description}</p>
           </div>
 
-          {/* Quantity Selector */}
           <div
             style={{
               margin: "20px 0",
@@ -196,9 +187,7 @@ export function SingleProduct() {
               marginTop: "20px",
               marginLeft: "30px",
             }}
-            onClick={() =>
-              alert(`Successfully added ${quantity} of ${product.name} to Cart`)
-            }
+            onClick={addToCart}
           >
             Add to Cart
           </button>
