@@ -34,3 +34,12 @@ select.inputs {
   box-sizing: border-box;
   color: black;
 }
+.error-message {
+  background-color: #ffe5e5;
+  color: #cc0000;
+  padding: 10px;
+  border: 1px solid #cc0000;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}

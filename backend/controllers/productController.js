@@ -8,8 +8,15 @@ exports.addProduct = async (req, res) => {
     if (!req.file) {   //express-validator for handle req.file (image file) so we handle manually in controller side.
       return res.status(400).json({ message: 'Image file is required' });
     }
+    
+     // Check for duplicate product by name (before upload!)
+    const existingProduct = await Product.findOne({ name: req.body.name });
+    if (existingProduct) {
+      return res.status(400).json({ message: 'Product with this name already exists' });
+    }
 
-    // Upload image to Cloudinary
+    //Cloudinary's .upload_stream() is callback-based and async in nature.
+    // Upload image to Cloudinary, asynchronous control flow, THEN this runs anyway, even if the above returns
     const stream = cloudinary.uploader.upload_stream(
       { resource_type: 'image', folder: 'pharmacart_products' },
       async (error, result) => {
@@ -18,6 +25,7 @@ exports.addProduct = async (req, res) => {
         }
 
         // After image is uploaded successfully
+        try{
         const { name, strength, category, price, description } = req.body;
 
         const newProduct = new Product({
@@ -32,6 +40,9 @@ exports.addProduct = async (req, res) => {
         await newProduct.save();
 
         res.status(201).json({ message: 'Product added successfully', product: newProduct });
+        } catch (err) {
+          return res.status(500).json({ message: 'Failed to save product', error: err.message });
+        }
       }
     );
 
@@ -76,61 +87,6 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Something went wrong', error: err.message });
   }
 };
-
-// @desc    Update a product
-// @route   PUT /api/products/updateproduct/:id
-// @access  Private
-// exports.updateProduct = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const product = await Product.findById(id);
-
-//     if (!product) return res.status(404).json({ message: 'Product not found' });
-
-//     // If new image uploaded
-//     if (req.file) {
-//       // Delete old image from Cloudinary
-//       const publicId = product.image.split('/').pop().split('.')[0];
-//       await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
-
-//       // Upload new image
-//       const streamUpload = (req) => {
-//         return new Promise((resolve, reject) => {
-//           const stream = cloudinary.uploader.upload_stream(
-//             { resource_type: 'image', folder: 'pharmacart_products' },
-//             (error, result) => {
-//               if (result) {
-//                 resolve(result);
-//               } else {
-//                 reject(error);
-//               }
-//             }
-//           );
-//           stream.end(req.file.buffer);
-//         });
-//       };
-
-//       const uploadResult = await streamUpload(req);
-//       product.image = uploadResult.secure_url;
-//     }
-
-//     // Update other fields
-//     const { name, strength, category, price, description } = req.body;
-//     if (name) product.name = name;
-//     if (strength) product.strength = strength;
-//     if (category) product.category = category;
-//     if (price) product.price = price;
-//     if (description) product.description = description;
-
-//     await product.save();
-
-//     res.status(200).json({ message: 'Product updated successfully', product });
-//   } catch (err) {
-//     res.status(500).json({ message: 'Something went wrong', error: err.message });
-//   }
-// };
-
-
 
 // @desc    Update a product
 // @route   PUT /api/products/updateproduct/:id

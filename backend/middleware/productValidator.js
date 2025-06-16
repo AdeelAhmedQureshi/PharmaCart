@@ -4,6 +4,7 @@ const { body } = require('express-validator');
 exports.validateProduct = [
   body('name')
     .notEmpty().withMessage('Product name is required')
+    .isLength({ min: 2 }).withMessage('Product name must be at least 2 characters')
     .isLength({ max: 100 }).withMessage('Product name should not exceed 100 characters'),
 
   body('strength')

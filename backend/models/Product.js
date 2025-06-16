@@ -8,6 +8,8 @@ const productSchema = new mongoose.Schema({
     trim: true,
     minlength: [2, 'Name must be at least 2 characters'],
     maxlength: [100, 'Name must not exceed 100 characters'],
+    // to make this field unique each product name must be unique
+    unique: true,
   },
   strength: {
     type: String,
