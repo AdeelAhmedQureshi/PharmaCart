@@ -1,27 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { medicine } from "../../Data/medicines";
 import { Categories } from "../Categories";
 import { useNavigate } from "react-router-dom";
-import { Login } from "./LogIn";
-
-const images = [
-  "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1576602976047-174e57a47881?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1550572017-edd951aa6e72?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1576073719676-aa95576db207?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1576602976047-174e57a47881?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=400&fit=crop",
-];
+import { Login } from "./LogIn"
 
 export function Home({ searchText }) {
   const [products, setProducts] = useState([]);
@@ -30,14 +10,20 @@ export function Home({ searchText }) {
   const [showLogin, setShowLogin] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const WithImages = medicine.map((prod) => ({
-      ...prod,
-      image: images[Math.floor(Math.random() * images.length)],
-    }));
-    setProducts(WithImages);
-    setFilteredProducts(WithImages);
-  }, []);
+   const fetchProducts = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/products');
+        const data = await res.json();
+        setProducts(data);
+        setFilteredProducts(data)
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      }
+    };
+  
+    useEffect(() => {
+      fetchProducts();
+    }, []);
 
   useEffect(() => {
     let filtered = [...products];
@@ -70,7 +56,6 @@ export function Home({ searchText }) {
   const handleCloseLogin = () => {
     setShowLogin(false);
   };
-
   return (
     <>
       <Categories
@@ -98,7 +83,7 @@ export function Home({ searchText }) {
           >
             {filteredProducts.map((prod) => (
               <div
-                key={prod.productId}
+                key={prod.id}
                 style={{
                   backgroundColor: "white",
                   padding: "10px",
@@ -110,7 +95,7 @@ export function Home({ searchText }) {
                   transition: "transform 0.2s, box-shadow 0.2s",
                   cursor: "pointer",
                 }}
-                onClick={() => handleProductClick(prod.productId)}
+                onClick={() => handleProductClick(prod._id)}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
                   e.currentTarget.style.boxShadow =
@@ -159,7 +144,7 @@ export function Home({ searchText }) {
                     fontSize: "16px",
                   }}
                 >
-                  ${prod.price}
+                  Rs.{prod.price}
                 </p>
                 <p
                   style={{

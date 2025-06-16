@@ -39,6 +39,9 @@
   font-size: large;
   cursor: pointer;
 }
+.btn:hover{
+  background-color: #122b59;
+}
 
 h2 {
   font-size: 30px;

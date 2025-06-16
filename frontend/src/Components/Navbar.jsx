@@ -18,7 +18,7 @@ export function Navbar({ SearchValue, openLoginPopup }) {
 
   const navigate = useNavigate();
   const { isLogIn, setisLogIn, userFullName } = useContext(LogInContext);
-  const firstLetter = userFullName ? userFullName.charAt(0).toUpperCase() : "U";
+  const firstLetter = userFullName ? userFullName.charAt(0).toUpperCase():"Un" 
 
   // Check localStorage for login status on component mount
   useEffect(() => {

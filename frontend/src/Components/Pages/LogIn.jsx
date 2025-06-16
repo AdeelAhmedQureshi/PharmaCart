@@ -1,16 +1,16 @@
 import "./Login.css";
 import { FaUser, FaLock } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LogInContext } from "../Context/UserContext";
 import { useContext } from "react";
 
-export function Login() {
+export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin } =
+  const { setisLogIn, setUserEmail, setUserFullName, setIsAdmin,setUserAddress ,setUserPhoneNumber} =
     useContext(LogInContext);
 
   const handleLogin = async (e) => {
@@ -31,14 +31,16 @@ export function Login() {
       localStorage.setItem("token", data.token); // persist on refresh";
       localStorage.setItem("userFullName", data.user.fullname); // persist on refresh
       localStorage.setItem("userEmail", email);
+      localStorage.setItem("userPhoneNumber", data.user.phoneNumber); // persist on refresh
+      localStorage.setItem("userAddress", data.user.address); // persist on refresh
       localStorage.setItem("isAdmin", JSON.stringify(data.user.isAdmin)); // for check isAdmin
 
       setisLogIn(true);
-      // alert("Login successful!");
       setUserEmail(email);
-      // alert(data)
-      // setUserFullName(data.user.fullname); // set username in context
-
+      setUserAddress(data.user.address); // set username in context
+      setUserPhoneNumber(data.user.phoneNumber); // set username in context
+      setUserFullName(data.user.fullname); // set username in context
+      if (onLoginSuccess) onLoginSuccess();
       setIsAdmin(data.user.isAdmin); // set isAdmin in context
 
       if (data.user.isAdmin) navigate("/dashboard"); // change route after login
@@ -86,10 +88,15 @@ export function Login() {
           </div>
           <p className="line">
             Do not have an account?
-            <Link to="/signup" style={{ textDecoration: "underline" }}>
-              {" "}
+            <span
+              onClick={onSwitchToSignUp}
+              style={{
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+            >
               Sign Up
-            </Link>
+            </span>
           </p>
           <button type="submit" className="btn">
             Log In

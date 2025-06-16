@@ -11,16 +11,20 @@ export function UserDetails({ setShowUserDetails }) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setisLogIn(false);
-    window.location.href = "/login";
+    localStorage.removeItem("userFullName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userPhoneNumber");
+    localStorage.removeItem("userAddress");
+    localStorage.removeItem("isAdmin")
   };
-  const name=userFullName.charAt(0).toUpperCase() + userFullName.slice(1).toLowerCase();
+  //const name=userFullName.charAt(0).toUpperCase() + userFullName.slice(1).toLowerCase();
   return (
     <div className="user-details-backdrop">
       <div className="user-details-sidebar">
         <button className="close-btn" onClick={onClose}>
           <FaTimes />
         </button>
-        <h2 className="username">{name}</h2>
+        <h2 className="username">{userFullName}</h2>
         <h3 className="user-info"> <strong>{userEmail}</strong></h3>
         <hr style={{ borderTop: "2px solid black"}} />
 
