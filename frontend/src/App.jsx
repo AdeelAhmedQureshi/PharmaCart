@@ -96,15 +96,15 @@
 
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navbar } from "../Components/Navbar";
-import { Login } from "../Components/Pages/LogIn";
-import { SignUp } from "../Components/Pages/SignUp";
-import { Footer } from "../Components/Footer";
-import { Home } from "../Components/Pages/Home";
-import { SingleProduct } from "../Components/Pages/SingleProduct";
-import { About } from "../Components/Pages/About";
-import Cart from "../Components/Pages/Cart";
-import { LogInProvider } from "../Components/Context/UserContext";
+import { Navbar } from "./Components/Navbar";
+import { Login } from "./Components/Pages/LogIn";
+import { SignUp } from "./Components/Pages/SignUp";
+import { Footer } from "./Components/Footer";
+import { Home } from "./Components/Pages/Home";
+import { SingleProduct } from "./Components/Pages/SingleProduct";
+import { About } from "./Components/Pages/About";
+import Cart from "./Components/Pages/Cart";
+import { LogInProvider } from "./Components/Context/UserContext";
 import AccessDenied from "./Admin_Dashboard/components/AccessDenied";
 import Dashboard from "./Admin_Dashboard/pages/Dashboard";
 import AddProduct from "./Admin_Dashboard/components/AddProduct";
@@ -118,6 +118,7 @@ import Products from "./Admin_Dashboard/components/ProductsTable";
 function App() {
   const [searchText, setSearchText] = useState("");
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   function handleSearch(value) {
     setSearchText(value);
@@ -135,8 +136,6 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Home searchText={searchText} />} />
           <Route path="/products/:productId" element={<SingleProduct />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
           <Route path="/about" element={<About />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/access-denied" element={<AccessDenied />} />
@@ -170,11 +169,31 @@ function App() {
               className="login-popup-content"
               onClick={(e) => e.stopPropagation()}
             >
-              <Login />
+              <Login
+                onLoginSuccess={() => setShowLogin(false)}
+                onSwitchToSignUp={() => {
+                  setShowLogin(false);
+                  setShowSignUp(true);
+                }}
+              />
             </div>
           </div>
         )}
-
+        {showSignUp && (
+          <div
+            className="login-popup-overlay"
+            onClick={() => setShowSignUp(false)}
+          >
+            <div
+              className="login-popup-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <SignUp
+                onSignupSuccess={() => setShowSignUp(false)}
+              />
+            </div>
+          </div>
+        )}
         <Footer />
       </BrowserRouter>
     </LogInProvider>

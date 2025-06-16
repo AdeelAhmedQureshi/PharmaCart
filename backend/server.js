@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const userRoutes = require('./routes/userRoutes'); 
 const productRoutes = require('./routes/productRoutes');
-const cartRoutes = require('./routes/CartRoutes'); 
+const cartRoutes=require('./routes/cartRoutes')
 const adminRoutes = require("./routes/adminRoutes");
 
 // App Config
@@ -33,7 +33,7 @@ mongoose.connect(db)
 // Routes
 app.use('/api/users', userRoutes); // User routes
 app.use('/api/products', productRoutes); // Product routes
-// app.use('/api/cart', cartRoutes);
+app.use('/api/cart', cartRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.get("/", (req, res) => {
