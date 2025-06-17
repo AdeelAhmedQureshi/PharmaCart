@@ -23,11 +23,12 @@ router.get("/profile", verifyToken, async (req, res) => {
 // @route   GET /api/admin/users
 // @desc    Fetch all users (Admin only)
 // @access  Private (Admin Only)
-router.get('/users', verifyToken, async (req, res) => {
+router.get("/users", verifyToken, async (req, res) => {
   try {
     // Ensure that the user is an admin before fetching users
-    if (!req.user.isAdmin) return res.status(403).json({ message: "Access denied" });
-  
+    if (!req.user.isAdmin)
+      return res.status(403).json({ message: "Access denied" });
+
     // Fetch all users, excluding passwords
     const users = await User.find().select("-password");
     res.json(users);

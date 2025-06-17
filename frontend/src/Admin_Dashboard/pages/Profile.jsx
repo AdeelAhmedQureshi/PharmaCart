@@ -10,7 +10,7 @@ const Profile = () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-            "http://localhost:5000/api/admin/profile",
+          "http://localhost:5000/api/admin/profile",
           {
             method: "GET",
             headers: {
@@ -26,6 +26,7 @@ const Profile = () => {
         }
 
         const data = await response.json();
+        console.log(data);
         setAdminData(data);
       } catch (error) {
         console.error("Error fetching admin profile:", error.message);

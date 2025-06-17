@@ -19,7 +19,7 @@ router.post('/add', async (req, res) => {
     } else {
       const itemIndex = cart.items.findIndex(p => p.productId.toString() === productId);
       if (itemIndex > -1) {
-        cart.items[itemIndex].quantity += quantity;
+        cart.items[itemIndex].quantity += Number(quantity);
       } else {
         cart.items.push({ productId, quantity });
       }
@@ -52,6 +52,10 @@ router.delete('/:userEmail/:productId', async (req, res) => {
     cart.items = cart.items.filter(item => item.productId.toString() !== req.params.productId);
     await cart.save();
     res.status(200).json(cart);
+
+    if(cart.items.length === 0) {
+      await Cart.deleteOne({ userEmail: req.params.userEmail });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

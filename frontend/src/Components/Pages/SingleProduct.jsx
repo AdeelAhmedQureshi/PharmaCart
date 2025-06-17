@@ -5,7 +5,7 @@ export function SingleProduct() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const {userEmail}=useContext(LogInContext).userEmail;
+  const {userEmail}=useContext(LogInContext);
 
   const fetchProduct = async () => {
     try {
@@ -33,7 +33,7 @@ export function SingleProduct() {
   const decreaseQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   const addToCart = async () => {
-    const userId = userEmail;
+    // const userId = userEmail;
   
     try {
       const response = await fetch("http://localhost:5000/api/cart/add", {
