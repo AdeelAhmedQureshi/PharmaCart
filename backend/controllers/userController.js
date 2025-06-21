@@ -1,8 +1,8 @@
 // controllers/userController.js
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
-const User = require('../models/User'); // import User model
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
+const User = require("../models/User"); // import User model
 
 // @desc    Register new user
 exports.registerUser = async (req, res) => {
@@ -13,10 +13,12 @@ exports.registerUser = async (req, res) => {
   // }
 
   try {
-    const { fullname, email, password, phoneNumber, address, gender } = req.body;
+    const { fullname, email, password, phoneNumber, address, gender } =
+      req.body;
 
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'User already exists' });
+    if (existingUser)
+      return res.status(400).json({ message: "User already exists" });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -33,9 +35,11 @@ exports.registerUser = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ message: 'User created successfully!' });
+    res.status(201).json({ message: "User created successfully!" });
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };
 
@@ -51,31 +55,33 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid Email' });
+    if (!user) return res.status(400).json({ message: "Invalid Email" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid Password' });
+    if (!isMatch) return res.status(400).json({ message: "Invalid Password" });
 
     const token = jwt.sign(
-      { id: user._id, isAdmin: user.isAdmin },  //  id and isAdmin are included in the token payload`
+      { id: user._id, isAdmin: user.isAdmin }, //  id and isAdmin are included in the token payload`
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: "1h" }
     );
 
-  res.status(200).json({
-    token,
-    user: {
-      id: user._id,
-      fullname: user.fullname,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      address: user.address,
-      isAdmin: user.isAdmin,
-      // Add any other user fields you need
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        address: user.address,
+        isAdmin: user.isAdmin,
+        // Add any other user fields you need
       },
-      message: 'Login successful'
-    }); 
+      message: "Login successful",
+    });
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };
