@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./Cart.css";
 import { LogInContext } from "../Context/UserContext";
-
+import { CheckoutComponent } from "./Checkout";
 const Cart = () => {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { userEmail } = useContext(LogInContext);  // ✅ userId -> userEmail
+  const { userEmail,userFullName,userAddress,userPhoneNumber } = useContext(LogInContext);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const fetchCart = async () => {
     try {
@@ -20,7 +21,7 @@ const Cart = () => {
   };
 
   const updateQuantity = async (productId, delta) => {
-    const item = cart.items.find(i => i.productId._id === productId);
+    const item = cart.items.find((i) => i.productId._id === productId);
     if (!item) return;
     const newQuantity = item.quantity + delta;
     if (newQuantity < 1) return;
@@ -30,9 +31,9 @@ const Cart = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userEmail,   // ✅ sending userEmail instead of userId
+          userEmail,
           productId,
-          quantity: delta
+          quantity: delta,
         }),
       });
 
@@ -49,9 +50,12 @@ const Cart = () => {
 
   const removeItem = async (productId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/cart/${userEmail}/${productId}`, {
-        method: "DELETE"
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/cart/${userEmail}/${productId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (res.ok) {
         fetchCart();
@@ -82,7 +86,7 @@ const Cart = () => {
     <div className="cart-container">
       <h2>Your Cart 🛒</h2>
       <div className="cart-items">
-        {cart.items.map(item => (
+        {cart.items.map((item) => (
           <div className="cart-item" key={item.productId._id}>
             <div className="item-details">
               <h3>{item.productId.name}</h3>
@@ -90,10 +94,17 @@ const Cart = () => {
               <p>Price: Rs. {item.productId.price}</p>
             </div>
             <div className="item-quantity">
-              <button onClick={() => updateQuantity(item.productId._id, -1)}>-</button>
+              <button onClick={() => updateQuantity(item.productId._id, -1)}>
+                -
+              </button>
               <span>{item.quantity}</span>
-              <button onClick={() => updateQuantity(item.productId._id, 1)}>+</button>
-              <button onClick={() => removeItem(item.productId._id)} style={{ marginLeft: "10px", color: "red" }}>
+              <button onClick={() => updateQuantity(item.productId._id, 1)}>
+                +
+              </button>
+              <button
+                onClick={() => removeItem(item.productId._id)}
+                style={{ marginLeft: "10px", color: "red" }}
+              >
                 ❌
               </button>
             </div>
@@ -101,105 +112,35 @@ const Cart = () => {
         ))}
       </div>
       <div className="cart-summary">
-        <p>Subtotal: <strong>Rs. {subtotal}</strong></p>
-        <button className="checkout-btn">Proceed to Checkout</button>
+        <p>
+          Subtotal: <strong>Rs. {subtotal}</strong>
+        </p>
+        <button className="checkout-btn" onClick={() => setShowCheckout(true)}>
+          Proceed to Checkout
+        </button>
       </div>
+   {/* Checkout Popup Modal */}
+     {showCheckout && (
+  <div className="checkout-popup-overlay">
+    <div className="checkout-popup-content">
+      <span className="checkout-popup-close" onClick={() => setShowCheckout(false)}>
+        &times;
+      </span>
+      <CheckoutComponent
+        userData={{
+          fullName: userFullName,
+          email: userEmail,
+          address: userAddress,
+          phoneNumber: userPhoneNumber,
+        }}
+        handleClose={() => setShowCheckout(false)}
+      />
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
 
 export default Cart;
-
-// import React, { useState } from "react";
-// import "./Cart.css";
-// import { CheckoutComponent } from "./Checkout";
-// const initialItems = [
-//   {
-//     id: 1,
-//     name: "Paracetamol 500mg",
-//     price: 50,
-//     quantity: 2,
-//     brand: "MediHeal",
-//   },
-//   {
-//     id: 2,
-//     name: "Amoxicillin 250mg",
-//     price: 120,
-//     quantity: 1,
-//     brand: "PharmaPlus",
-//   },
-// ];
-
-// const Cart = () => {
-//   const [cartItems, setCartItems] = useState(initialItems);
-//   const [showCheckout, setShowCheckout] = useState(false);
-
-//   const handleQuantityChange = (id, delta) => {
-//     const updated = cartItems.map((item) =>
-//       item.id === id
-//         ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-//         : item
-//     );
-//     setCartItems(updated);
-//   };
-
-//   const subtotal = cartItems.reduce(
-//     (sum, item) => sum + item.price * item.quantity,
-//     0
-//   );
-//   const handleCheckoutClick = () => {
-//     setShowCheckout(true); 
-//   };
-
-//   const handleCloseCheckout = () => {
-//     setShowCheckout(false); 
-//   };
-
-//   return (
-//     <div className="cart-container">
-//       <h2> Cart Summary 🛒</h2>
-
-//       <div className="cart-items">
-//         {cartItems.map((item) => (
-//           <div className="cart-item" key={item.id}>
-//             <div className="item-details">
-//               <h3>{item.name}</h3>
-//               {/* description here */}
-//               <p>Price: ${item.price}</p>
-//             </div>
-//             <div className="item-quantity">
-//               <button onClick={() => handleQuantityChange(item.id, -1)}>
-//                 -
-//               </button>
-//               <span>{item.quantity}</span>
-//               <button onClick={() => handleQuantityChange(item.id, 1)}>
-//                 +
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-
-//       <div className="cart-summary">
-//         <p>
-//           Subtotal: <strong> ${subtotal}</strong>
-//         </p>
-//         <button className="checkout-btn" onClick={handleCheckoutClick}>
-//           Proceed to Checkout
-//         </button>
-//       </div>
-//       {showCheckout && (
-//         <div className="checkout-modal-overlay" onClick={handleCloseCheckout}>
-//           <div
-//             className="checkout-modal-content"
-//             onClick={(e) => e.stopPropagation()}
-//           >
-//             <CheckoutComponent handleClose={handleCloseCheckout} />
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Cart;

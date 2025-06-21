@@ -37,12 +37,13 @@ export function Login({ showSuccess, onCloseSuccess  ,onSwitchToSignUp,onLoginSu
 
       setisLogIn(true);
       setUserEmail(email);
-      setUserAddress(data.user.address); // set username in context
-      setUserPhoneNumber(data.user.phoneNumber); // set username in context
-      setUserFullName(data.user.fullname); // set username in context
+      setUserAddress(data.user.address);
+      setUserPhoneNumber(data.user.phoneNumber); 
+      setUserFullName(data.user.fullname); 
       if (onLoginSuccess) onLoginSuccess();
-      setIsAdmin(data.user.isAdmin); // set isAdmin in context
+      setIsAdmin(data.user.isAdmin); 
 
+     // alert(data.user.address)
       if (data.user.isAdmin) navigate("/dashboard"); // change route after login
       else navigate("/"); // change route after login
     } else {
