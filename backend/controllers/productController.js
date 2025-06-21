@@ -1,61 +1,79 @@
 // controllers/productController.js
-const Product = require('../models/Product');
-const cloudinary = require('../config/cloudinary');
+const Product = require("../models/Product");
+const cloudinary = require("../config/cloudinary");
 
 // @desc    Add a new product  protected route controller
 exports.addProduct = async (req, res) => {
   try {
-    if (!req.file) {   //express-validator for handle req.file (image file) so we handle manually in controller side.
-      return res.status(400).json({ message: 'Image file is required' });
+    if (!req.file) {
+      //express-validator for handle req.file (image file) so we handle manually in controller side.
+      return res.status(400).json({ message: "Image file is required" });
     }
-    
-     // Check for duplicate product by name (before upload!)
+
+    // Check for duplicate product by name (before upload!)
     const existingProduct = await Product.findOne({ name: req.body.name });
     if (existingProduct) {
-      return res.status(400).json({ message: 'Product with this name already exists' });
+      return res
+        .status(400)
+        .json({ message: "Product with this name already exists" });
     }
 
     //Cloudinary's .upload_stream() is callback-based and async in nature.
     // Upload image to Cloudinary, asynchronous control flow, THEN this runs anyway, even if the above returns
     const stream = cloudinary.uploader.upload_stream(
-      { resource_type: 'image', folder: 'pharmacart_products' },
+      { resource_type: "image", folder: "pharmacart_products" },
       async (error, result) => {
         if (error) {
-          return res.status(500).json({ message: 'Cloudinary upload failed', error: error.message });
+          return res
+            .status(500)
+            .json({
+              message: "Cloudinary upload failed",
+              error: error.message,
+            });
         }
 
         // After image is uploaded successfully
-        try{
-        const { name, strength, category, price, description } = req.body;
+        try {
+          const { name, strength, category, price, description } = req.body;
 
-        const newProduct = new Product({
-          name,
-          strength,
-          category,
-          price,
-          description,
-          image: result.secure_url, // Cloudinary URL
-        });
+          const newProduct = new Product({
+            name,
+            strength,
+            category,
+            price,
+            description,
+            image: result.secure_url, // Cloudinary URL
+          });
 
-        await newProduct.save();
+          await newProduct.save();
 
-        res.status(201).json({ message: 'Product added successfully', product: newProduct });
+          res
+            .status(201)
+            .json({
+              message: "Product added successfully",
+              product: newProduct,
+            });
         } catch (err) {
-          return res.status(500).json({ message: 'Failed to save product', error: err.message });
+          return res
+            .status(500)
+            .json({ message: "Failed to save product", error: err.message });
         }
       }
     );
 
     stream.end(req.file.buffer); // Upload the buffer
-  }catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: 'Validation failed', errors: err.errors });
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: "Validation failed", errors: err.errors });
     }
-    
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };
-
 
 // @desc    Delete a product
 // @route   DELETE /api/products/deleteproduct/:id
@@ -65,26 +83,31 @@ exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
 
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    if (!product) return res.status(404).json({ message: "Product not found" });
 
     // Get public_id from Cloudinary image URL
-    const publicId = product.image.split('/').pop().split('.')[0];
+    const publicId = product.image.split("/").pop().split(".")[0];
 
     // Delete from Cloudinary
     // Try deleting from Cloudinary
-      try {
-        await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
-      } catch (cloudErr) {
-        console.warn('Cloudinary image deletion failed or image not found:', cloudErr.message);
-        // Proceed even if deletion fails — not critical
-      }
+    try {
+      await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
+    } catch (cloudErr) {
+      console.warn(
+        "Cloudinary image deletion failed or image not found:",
+        cloudErr.message
+      );
+      // Proceed even if deletion fails — not critical
+    }
 
     // Delete from MongoDB
     await Product.findByIdAndDelete(id);
 
-    res.status(200).json({ message: 'Product deleted successfully' });
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };
 
@@ -96,19 +119,19 @@ exports.updateProduct = async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
 
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    if (!product) return res.status(404).json({ message: "Product not found" });
 
     // If new image uploaded
     if (req.file) {
       // Delete old image from Cloudinary
-      const publicId = product.image.split('/').pop().split('.')[0];
+      const publicId = product.image.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(`pharmacart_products/${publicId}`);
 
       // Upload new image
       const streamUpload = (req) => {
         return new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream(
-            { resource_type: 'image', folder: 'pharmacart_products' },
+            { resource_type: "image", folder: "pharmacart_products" },
             (error, result) => {
               if (result) {
                 resolve(result);
@@ -135,12 +158,13 @@ exports.updateProduct = async (req, res) => {
 
     await product.save();
 
-    res.status(200).json({ message: 'Product updated successfully', product });
+    res.status(200).json({ message: "Product updated successfully", product });
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };
-
 
 // @desc    Get all products
 exports.getAllProducts = async (req, res) => {
@@ -148,7 +172,9 @@ exports.getAllProducts = async (req, res) => {
     const products = await Product.find().sort({ createdAt: -1 }); // latest first
     res.status(200).json(products);
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };
 
@@ -158,10 +184,12 @@ exports.getProductById = async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
 
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+    if (!product) return res.status(404).json({ message: "Product not found" });
 
     res.status(200).json(product);
   } catch (err) {
-    res.status(500).json({ message: 'Something went wrong', error: err.message });
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: err.message });
   }
 };

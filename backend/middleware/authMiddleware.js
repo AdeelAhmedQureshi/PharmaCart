@@ -1,11 +1,13 @@
+// middleware/adminMiddleware.js
 const jwt = require("jsonwebtoken");
 
-const verifyToken = (req, res, next) => {
+const verifyAdmin = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  
-  // Check if the authorization header exists and split the token from 'Bearer token'
-  if (!authHeader) {
-    return res.status(401).json({ message: "Authorization header is missing" });
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Authorization header is missing or malformed" });
   }
 
   const token = authHeader.split(" ")[1];
@@ -15,18 +17,29 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    // Verify the token using JWT_SECRET from environment variables
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Store user info (id, isAdmin) in the request object for later use
-    req.user = decoded;
+    if (!decoded.isAdmin) {
+      return res.status(403).json({ message: "Access denied: Admins only" });
+    }
 
-    // Call next() to pass control to the next middleware or route handler
+    req.user = decoded;
     next();
   } catch (err) {
-    console.error("Error verifying token:", err); // Log the error to the console for debugging
-    return res.status(403).json({ message: "Invalid or expired token" });
+    console.error("Error verifying token:", err.name, err.message);
+
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired" });
+    }
+
+    if (err.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    return res
+      .status(500)
+      .json({ message: "Internal server error verifying token" });
   }
 };
 
-module.exports = verifyToken;
+module.exports = verifyAdmin;

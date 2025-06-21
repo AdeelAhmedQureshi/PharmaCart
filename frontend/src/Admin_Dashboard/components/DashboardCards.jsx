@@ -1,33 +1,37 @@
+import React, { useContext } from "react";
 import { FaBox, FaUsers, FaDollarSign, FaShoppingCart } from "react-icons/fa";
-
-const cardData = [
-  {
-    title: "Total Products",
-    count: 120,
-    icon: <FaBox className="text-white text-3xl" />,
-    bgColor: "bg-blue-600",
-  },
-  {
-    title: "Total Customers",
-    count: 340,
-    icon: <FaUsers className="text-white text-3xl" />,
-    bgColor: "bg-green-600",
-  },
-  {
-    title: "Total Orders",
-    count: 96,
-    icon: <FaShoppingCart className="text-white text-3xl" />,
-    bgColor: "bg-orange-500",
-  },
-  {
-    title: "Total Earnings",
-    count: "$45,000",
-    icon: <FaDollarSign className="text-white text-3xl" />,
-    bgColor: "bg-yellow-500",
-  },
-];
+import { DashboardContext } from "../../Components/Context/DashboardContext";
 
 const DashboardCards = () => {
+  const { stats } = useContext(DashboardContext);
+
+  const cardData = [
+    {
+      title: "Total Products",
+      count: stats.totalProducts || 0,
+      icon: <FaBox className="text-white text-3xl" />,
+      bgColor: "bg-blue-600",
+    },
+    {
+      title: "Total Customers",
+      count: stats.totalCustomers || 0,
+      icon: <FaUsers className="text-white text-3xl" />,
+      bgColor: "bg-green-600",
+    },
+    {
+      title: "Total Orders",
+      count: stats.totalOrders || 0,
+      icon: <FaShoppingCart className="text-white text-3xl" />,
+      bgColor: "bg-orange-500",
+    },
+    {
+      title: "Total Earnings",
+      count: `Rs ${stats.totalEarnings || 0}`,
+      icon: <FaDollarSign className="text-white text-3xl" />,
+      bgColor: "bg-yellow-500",
+    },
+  ];
+
   return (
     <div className="w-full px-4 md:px-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -43,8 +47,12 @@ const DashboardCards = () => {
               {card.icon}
             </div>
             <div className="mt-4">
-              <h3 className="text-gray-700 text-base font-semibold">{card.title}</h3>
-              <p className="text-2xl font-bold text-gray-800 mt-1">{card.count}</p>
+              <h3 className="text-gray-700 text-base font-semibold">
+                {card.title}
+              </h3>
+              <p className="text-2xl font-bold text-gray-800 mt-1">
+                {card.count}
+              </p>
             </div>
           </div>
         ))}

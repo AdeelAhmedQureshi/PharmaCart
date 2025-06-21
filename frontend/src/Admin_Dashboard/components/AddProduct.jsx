@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./AddProduct.css";
+import { useContext } from "react";
+import { DashboardContext } from "../../Components/Context/DashboardContext";
 
 function AddProduct() {
+  const { fetchStats } = useContext(DashboardContext);
   const [serverError, setServerError] = useState(null);
 
   const categories = [
@@ -29,7 +32,9 @@ function AddProduct() {
       image: null,
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Product name is required").min(2, "Product name must be at least 2 characters"),
+      name: Yup.string()
+        .required("Product name is required")
+        .min(2, "Product name must be at least 2 characters"),
       strength: Yup.string().required("Strength is required"),
       category: Yup.string().required("Category is required"),
       price: Yup.number()
@@ -44,10 +49,10 @@ function AddProduct() {
       setServerError(null);
 
       const allEmpty =
-        values.name.trim() === '' &&
-        values.strength.trim() === '' &&
-        values.price === '' &&
-        values.description.trim() === '' &&
+        values.name.trim() === "" &&
+        values.strength.trim() === "" &&
+        values.price === "" &&
+        values.description.trim() === "" &&
         values.image === null;
 
       if (allEmpty) {
@@ -64,15 +69,19 @@ function AddProduct() {
       formData.append("image", values.image);
 
       try {
-        const response = await fetch("http://localhost:5000/api/products/addproduct", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          "http://localhost:5000/api/products/addproduct",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         const data = await response.json();
 
         if (response.ok) {
           alert("✅ Product added successfully!");
+          fetchStats(); // update stats after successful addition
           resetForm();
         } else {
           setServerError(data.message || "Failed to add product");
@@ -103,7 +112,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.name && formik.errors.name && <p>{formik.errors.name}</p>}
+          {formik.touched.name && formik.errors.name && (
+            <p>{formik.errors.name}</p>
+          )}
         </div>
 
         <div>
@@ -116,7 +127,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.strength && formik.errors.strength && <p>{formik.errors.strength}</p>}
+          {formik.touched.strength && formik.errors.strength && (
+            <p>{formik.errors.strength}</p>
+          )}
         </div>
 
         <div>
@@ -128,7 +141,9 @@ function AddProduct() {
             className="inputs"
           >
             {categories.map((c, i) => (
-              <option key={i} value={c}>{c}</option>
+              <option key={i} value={c}>
+                {c}
+              </option>
             ))}
           </select>
         </div>
@@ -143,7 +158,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.price && formik.errors.price && <p>{formik.errors.price}</p>}
+          {formik.touched.price && formik.errors.price && (
+            <p>{formik.errors.price}</p>
+          )}
         </div>
 
         <div>
@@ -156,7 +173,9 @@ function AddProduct() {
             onBlur={formik.handleBlur}
             className="inputs"
           />
-          {formik.touched.description && formik.errors.description && <p>{formik.errors.description}</p>}
+          {formik.touched.description && formik.errors.description && (
+            <p>{formik.errors.description}</p>
+          )}
         </div>
 
         <div>
@@ -168,7 +187,9 @@ function AddProduct() {
             onChange={(e) => formik.setFieldValue("image", e.target.files[0])}
             onBlur={formik.handleBlur}
           />
-          {formik.touched.image && formik.errors.image && <p>{formik.errors.image}</p>}
+          {formik.touched.image && formik.errors.image && (
+            <p>{formik.errors.image}</p>
+          )}
         </div>
 
         <div>

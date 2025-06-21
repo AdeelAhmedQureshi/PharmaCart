@@ -18,6 +18,7 @@ import ProtectedAdminRoute from "./Admin_Dashboard/routes/ProtectedAdminRoute";
 import Profile from "./Admin_Dashboard/pages/Profile";
 import Customers from "./Admin_Dashboard/pages/Customers";
 import Products from "./Admin_Dashboard/components/ProductsTable";
+import { DashboardProvider } from "./Components/Context/DashboardContext";
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -35,33 +36,34 @@ function App() {
           SearchValue={handleSearch}
           openLoginPopup={() => setShowLogin(true)}
         />
-
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home searchText={searchText} />} />
-          <Route path="/products/:productId" element={<SingleProduct />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/access-denied" element={<AccessDenied />} />
-
-          {/* Admin Protected Routes with Sidebar Layout */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedAdminRoute>
-                <DashboardLayout />
-              </ProtectedAdminRoute>
-            }
-          >
-            {/* Nested routes (these render inside DashboardLayout) */}
-            <Route index element={<Dashboard />} />
-            <Route path="addproduct" element={<AddProduct />} />
-            <Route path="updateproduct/:pid" element={<UpdateProduct />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="customers" element={<Customers />} />
-            <Route path="products" element={<Products />} />
-          </Route>
-        </Routes>
+        <DashboardProvider>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Home searchText={searchText} />} />
+            <Route path="/products/:productId" element={<SingleProduct />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/access-denied" element={<AccessDenied />} />
+            {/* Admin Protected Routes with Sidebar Layout */}{" "}
+            {/*wrapping admin dashboard with context here, */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedAdminRoute>
+                  <DashboardLayout />
+                </ProtectedAdminRoute>
+              }
+            >
+              {/* Nested routes (these render inside DashboardLayout) */}
+              <Route index element={<Dashboard />} />
+              <Route path="addproduct" element={<AddProduct />} />
+              <Route path="updateproduct/:pid" element={<UpdateProduct />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="customers" element={<Customers />} />
+              <Route path="products" element={<Products />} />
+            </Route>
+          </Routes>
+        </DashboardProvider>
 
         {/* Login Popup */}
         {showLogin && (
@@ -92,9 +94,7 @@ function App() {
               className="login-popup-content"
               onClick={(e) => e.stopPropagation()}
             >
-              <SignUp
-                onSignupSuccess={() => setShowSignUp(false)}
-              />
+              <SignUp onSignupSuccess={() => setShowSignUp(false)} />
             </div>
           </div>
         )}

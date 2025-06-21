@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import "./SignUp.css";
+import { useNavigate } from "react-router-dom";
 
 export function SignUp() {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     fullname: "",
     gender: "female",
@@ -53,8 +55,9 @@ export function SignUp() {
       })
       .then((response) => {
         console.log("Success:", response);
-        setpopup(true);       // ✅ Show popup
-        setShowForm(false);   // ✅ Hide form after success
+        setpopup(true); // ✅ Show popup
+        setShowForm(false); // ✅ Hide form after success
+        navigate("/");
       })
       .catch((error) => {
         alert("Error: " + error.message);
@@ -71,31 +74,54 @@ export function SignUp() {
 
   function validateInp(name, value) {
     if (name === "fullname") {
-      if (!value) setErrors((prev) => ({ ...prev, [name]: "*FullName is Required" }));
-      else if (value.length < 3) setErrors((prev) => ({ ...prev, [name]: "*FullName must be 3 Characters long" }));
+      if (!value)
+        setErrors((prev) => ({ ...prev, [name]: "*FullName is Required" }));
+      else if (value.length < 3)
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*FullName must be 3 Characters long",
+        }));
       else setErrors((prev) => ({ ...prev, [name]: "" }));
     } else if (name === "email") {
-      const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-      if (!value) setErrors((prev) => ({ ...prev, [name]: "*Email is Required" }));
-      else if (!re.test(value)) setErrors((prev) => ({ ...prev, [name]: "*Invalid Email" }));
+      const re =
+        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      if (!value)
+        setErrors((prev) => ({ ...prev, [name]: "*Email is Required" }));
+      else if (!re.test(value))
+        setErrors((prev) => ({ ...prev, [name]: "*Invalid Email" }));
       else setErrors((prev) => ({ ...prev, [name]: "" }));
     } else if (name === "phoneNumber") {
       const re = /^03\d{9}$/;
-      if (!value) setErrors((prev) => ({ ...prev, [name]: "*phoneNumber is Required" }));
-      else if (!re.test(value)) setErrors((prev) => ({ ...prev, [name]: "*Invalid PhoneNumber" }));
+      if (!value)
+        setErrors((prev) => ({ ...prev, [name]: "*phoneNumber is Required" }));
+      else if (!re.test(value))
+        setErrors((prev) => ({ ...prev, [name]: "*Invalid PhoneNumber" }));
       else setErrors((prev) => ({ ...prev, [name]: "" }));
     } else if (name === "address") {
-      if (!value) setErrors((prev) => ({ ...prev, [name]: "*Address is Required" }));
-      else if (value.length < 10) setErrors((prev) => ({ ...prev, [name]: "*Incomplete Address" }));
+      if (!value)
+        setErrors((prev) => ({ ...prev, [name]: "*Address is Required" }));
+      else if (value.length < 10)
+        setErrors((prev) => ({ ...prev, [name]: "*Incomplete Address" }));
       else setErrors((prev) => ({ ...prev, [name]: "" }));
     } else if (name === "password") {
-      if (!value) setErrors((prev) => ({ ...prev, [name]: "*Password is Required" }));
-      else if (value.length < 8) setErrors((prev) => ({ ...prev, [name]: "*Password must be at least 8 characters" }));
+      if (!value)
+        setErrors((prev) => ({ ...prev, [name]: "*Password is Required" }));
+      else if (value.length < 8)
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Password must be at least 8 characters",
+        }));
       else setErrors((prev) => ({ ...prev, [name]: "" }));
     } else if (name === "password2") {
-      if (!value) setErrors((prev) => ({ ...prev, [name]: "*Confirm Your Password" }));
-      else if (value.length < 8) setErrors((prev) => ({ ...prev, [name]: "*Password must be at least 8 characters" }));
-      else if (value !== data.password) setErrors((prev) => ({ ...prev, [name]: "*Password must be same" }));
+      if (!value)
+        setErrors((prev) => ({ ...prev, [name]: "*Confirm Your Password" }));
+      else if (value.length < 8)
+        setErrors((prev) => ({
+          ...prev,
+          [name]: "*Password must be at least 8 characters",
+        }));
+      else if (value !== data.password)
+        setErrors((prev) => ({ ...prev, [name]: "*Password must be same" }));
       else setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   }
@@ -118,25 +144,59 @@ export function SignUp() {
 
           <h3 className="SigUpTittle">Create Account</h3>
 
-          <input type="text" placeholder="FullName" className="inputs" name="fullname" onChange={handleChange} />
+          <input
+            type="text"
+            placeholder="FullName"
+            className="inputs"
+            name="fullname"
+            onChange={handleChange}
+          />
           {errors.fullname && <p>{errors.fullname}</p>}
 
-          <select name="gender" className="inputs" onChange={handleChange} value={data.gender}>
+          <select
+            name="gender"
+            className="inputs"
+            onChange={handleChange}
+            value={data.gender}
+          >
             <option value="female">Female</option>
             <option value="male">Male</option>
             <option value="Prefer not to say">Prefer not to say</option>
           </select>
 
-          <input type="tel" name="phoneNumber" placeholder="PhoneNumber" className="inputs" onChange={handleChange} />
+          <input
+            type="tel"
+            name="phoneNumber"
+            placeholder="PhoneNumber"
+            className="inputs"
+            onChange={handleChange}
+          />
           {errors.phoneNumber && <p>{errors.phoneNumber}</p>}
 
-          <textarea name="address" placeholder="Full Address" className="inputs" onChange={handleChange} />
+          <textarea
+            name="address"
+            placeholder="Full Address"
+            className="inputs"
+            onChange={handleChange}
+          />
           {errors.address && <p>{errors.address}</p>}
 
-          <input type="email" name="email" placeholder="Email" className="inputs" onChange={handleChange} />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="inputs"
+            onChange={handleChange}
+          />
           {errors.email && <p>{errors.email}</p>}
 
-          <input type="password" name="password" placeholder="Password" className="inputs" onChange={handleChange} />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="inputs"
+            onChange={handleChange}
+          />
           {errors.password && <p>{errors.password}</p>}
 
           <input
@@ -155,7 +215,14 @@ export function SignUp() {
       {popup && (
         <div className="popup">
           <FaTimes
-            style={{ color: "red", fontSize: "24px", cursor: "pointer", position: "absolute", top: "10px", right: "20px" }}
+            style={{
+              color: "red",
+              fontSize: "24px",
+              cursor: "pointer",
+              position: "absolute",
+              top: "10px",
+              right: "20px",
+            }}
             onClick={() => setpopup(false)}
           />
           <h3 className="popup-text">Registration Successful!</h3>
