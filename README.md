@@ -38,3 +38,22 @@ PharmaCart is a full-stack MERN (MongoDB, Express.js, React.js, Node.js) web app
 ```bash
 git clone https://github.com/AdeelAhmedQureshi/PharmaCart
 cd pharmacart
+
+### Backend Setup
+cd backend
+npm install
+# Create a .env file with the following
+# MONGODB_URI=your_mongodb_connection_string
+# JWT_SECRET=your_jwt_secret
+# CLOUDINARY_CLOUD_NAME=your_cloud_name
+# CLOUDINARY_API_KEY=your_api_key
+# CLOUDINARY_API_SECRET=your_api_secret
+npm run server
+
+
+### Frontend Setup
+cd ../frontend
+npm install
+npm run dev
+
+
